@@ -20,10 +20,10 @@ from engine.standards_mapper import compute_standards_summary
 # In-memory storage for batch Test Runs
 TEST_RUNS_STORE = {}
 
-def extract_internal_links(base_url: str, html_content: str, max_pages: int = 8) -> List[str]:
+def extract_internal_links(base_url: str, html_content: str, max_pages: int = 15) -> List[str]:
     """
-    Parses HTML content of a webpage and extracts unique internal links
-    belonging to the same origin domain.
+    Parses HTML content of a webpage and extracts all unique internal page destinations
+    accessible via navigation links, dropdown menus, header buttons, form actions, and click handlers.
     """
     soup = BeautifulSoup(html_content, 'html.parser')
     parsed_base = urlparse(base_url)
@@ -31,24 +31,52 @@ def extract_internal_links(base_url: str, html_content: str, max_pages: int = 8)
 
     discovered_urls: Set[str] = {base_url}
 
-    for a_tag in soup.find_all('a', href=True):
-        href = a_tag['href'].strip()
+    def process_target_url(raw_target: str):
+        if not raw_target:
+            return
+        raw_target = raw_target.strip()
+        if raw_target.startswith('#') or raw_target.startswith('javascript:') or raw_target.startswith('mailto:') or raw_target.startswith('tel:'):
+            return
         
-        # Skip empty, anchor-only, or javascript links
-        if not href or href.startswith('#') or href.startswith('javascript:') or href.startswith('mailto:') or href.startswith('tel:'):
-            continue
+        # Check for extracted JS location redirects e.g. location.href='/page'
+        js_match = re.search(r'''(?:location\.href|window\.open)\s*=\s*['"]([^'"]+)['"]''', raw_target)
+        if js_match:
+            raw_target = js_match.group(1)
 
-        full_url = urljoin(base_url, href)
+        full_url = urljoin(base_url, raw_target)
         parsed_target = urlparse(full_url)
 
-        # Ensure link belongs to same origin domain and http/https scheme
         if parsed_target.scheme in ['http', 'https'] and parsed_target.netloc.lower() == base_domain:
-            # Strip fragment
             clean_url = full_url.split('#')[0]
             discovered_urls.add(clean_url)
 
+    # 1. Standard <a> links (including navbar dropdown menus and sub-navigation links)
+    for a_tag in soup.find_all('a', href=True):
+        process_target_url(a_tag['href'])
         if len(discovered_urls) >= max_pages:
             break
+
+    # 2. Buttons with data-url, data-href, formaction, or onclick redirects
+    if len(discovered_urls) < max_pages:
+        for btn in soup.find_all(['button', 'input', 'div'], attrs={'onclick': True}):
+            process_target_url(btn['onclick'])
+            if len(discovered_urls) >= max_pages:
+                break
+
+    for btn in soup.find_all(['button', 'a', 'div'], attrs=re.compile(r'data-(url|href|target)')):
+        for attr in ['data-url', 'data-href', 'data-target']:
+            if btn.has_attr(attr):
+                process_target_url(btn[attr])
+                break
+        if len(discovered_urls) >= max_pages:
+            break
+
+    # 3. Form action destinations
+    if len(discovered_urls) < max_pages:
+        for form in soup.find_all('form', action=True):
+            process_target_url(form['action'])
+            if len(discovered_urls) >= max_pages:
+                break
 
     return list(discovered_urls)
 

@@ -117,106 +117,142 @@
 
     /* HEADER */
     header {
-      background: rgba(255, 255, 255, 0.92);
+    header {
+      background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-subtle);
       position: sticky;
       top: 0;
-      z-index: 100;
-      box-shadow: var(--shadow-sm);
+      z-index: 1000;
+      height: 64px;
+      display: flex;
+      align-items: center;
     }
     .header-container {
-      max-width: 1380px;
+      max-width: 1440px;
+      width: 100%;
       margin: 0 auto;
-      padding: 14px 28px;
+      padding: 0 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 24px;
+      gap: 16px;
+      white-space: nowrap;
     }
     .brand-group {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       text-decoration: none;
       color: var(--text-main);
+      flex-shrink: 0;
     }
     .brand-logo-icon {
-      width: 36px;
-      height: 36px;
-      background: var(--primary);
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, var(--primary) 0%, #6366f1 100%);
       color: #ffffff;
-      border-radius: 10px;
+      border-radius: 9px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 10px rgba(67, 56, 202, 0.25);
+      box-shadow: 0 2px 8px rgba(67, 56, 202, 0.25);
     }
     .brand-name {
-      font-size: 1.35rem;
+      font-size: 1.25rem;
       font-weight: 800;
       letter-spacing: -0.02em;
+      color: var(--text-main);
     }
     .brand-tag {
-      font-size: 0.75rem;
+      font-size: 0.65rem;
       font-weight: 700;
       background: var(--primary-light);
       color: var(--primary);
       border: 1px solid var(--primary-border);
-      padding: 2px 8px;
+      padding: 3px 8px;
       border-radius: 6px;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      line-height: 1;
+      display: inline-block;
     }
 
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 4px;
       list-style: none;
+      margin: 0;
+      padding: 0;
     }
     .nav-link {
       text-decoration: none;
       color: var(--text-secondary);
-      font-size: 0.925rem;
+      font-size: 0.875rem;
       font-weight: 600;
-      transition: color 0.15s ease;
+      padding: 8px 14px;
+      border-radius: 8px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
-    .nav-link:hover, .nav-link.active {
+    .nav-link:hover {
       color: var(--primary);
+      background: var(--primary-light);
+    }
+    .nav-link.active {
+      color: var(--primary);
+      background: var(--primary-light);
+      font-weight: 700;
     }
 
     .header-right {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
+      flex-shrink: 0;
     }
     .badge-std {
-      font-size: 0.775rem;
+      font-size: 0.725rem;
       font-weight: 700;
-      padding: 5px 10px;
+      padding: 4px 10px;
       border-radius: 9999px;
       display: inline-flex;
       align-items: center;
       gap: 5px;
+      white-space: nowrap;
+      line-height: 1;
     }
     .badge-wcag { background: var(--primary-light); color: var(--primary); border: 1px solid var(--primary-border); }
     .badge-508 { background: var(--info-bg); color: var(--info-text); border: 1px solid var(--info-border); }
     .badge-en { background: #fdf2f8; color: #be185d; border: 1px solid #fbcfe8; }
 
     .user-profile-avatar {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
       background: var(--text-main);
       color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 800;
-      font-size: 0.85rem;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.02em;
       border: 2px solid var(--border-subtle);
+      margin-left: 4px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      cursor: pointer;
+    }
+
+    @media (max-width: 1024px) {
+      .brand-tag { display: none; }
+      .badge-std { display: none; }
     }
 
     /* MAIN CONTAINER */

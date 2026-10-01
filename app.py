@@ -153,53 +153,140 @@ INDEX_HTML = """
     /* Header Navigation */
     header {
       background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-subtle);
-      padding: 18px 32px;
       position: sticky;
       top: 0;
-      z-index: 90;
-      box-shadow: var(--shadow-sm);
+      z-index: 1000;
+      height: 64px;
+      display: flex;
+      align-items: center;
     }
-    .header-inner {
-      max-width: 1200px;
+    .header-container {
+      max-width: 1440px;
+      width: 100%;
       margin: 0 auto;
+      padding: 0 24px;
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
+      gap: 16px;
+      white-space: nowrap;
     }
-    .brand {
+    .brand-group {
       display: flex;
       align-items: center;
-      gap: 12px;
-      font-size: 1.35rem;
-      font-weight: 800;
-      color: var(--text-main);
+      gap: 10px;
       text-decoration: none;
-      letter-spacing: -0.5px;
+      color: var(--text-main);
+      flex-shrink: 0;
     }
-    .brand-icon {
-      background: var(--primary-light);
-      color: var(--primary);
-      border: 1px solid rgba(67, 56, 202, 0.2);
-      border-radius: 10px;
-      width: 40px;
-      height: 40px;
+    .brand-logo-icon {
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, var(--primary) 0%, #6366f1 100%);
+      color: #ffffff;
+      border-radius: 9px;
       display: flex;
       align-items: center;
       justify-content: center;
+      box-shadow: 0 2px 8px rgba(67, 56, 202, 0.25);
     }
-    .badge-wcag {
+    .brand-name {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+    }
+    .brand-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
       background: var(--primary-light);
       color: var(--primary);
-      font-size: 0.8rem;
-      font-weight: 700;
-      padding: 6px 14px;
-      border-radius: 9999px;
-      border: 1px solid rgba(67, 56, 202, 0.15);
+      border: 1px solid var(--primary-border);
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      line-height: 1;
+      display: inline-block;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 8px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+    }
+    .nav-link:hover {
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+    .nav-link.active {
+      color: var(--primary);
+      background: var(--primary-light);
+      font-weight: 700;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .badge-std {
+      font-size: 0.725rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+      line-height: 1;
+    }
+    .badge-wcag { background: var(--primary-light); color: var(--primary); border: 1px solid var(--primary-border); }
+    .badge-508 { background: var(--info-bg); color: var(--info-text); border: 1px solid var(--info-border); }
+    .badge-en { background: #fdf2f8; color: #be185d; border: 1px solid #fbcfe8; }
+
+    .user-profile-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--text-main);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.02em;
+      border: 2px solid var(--border-subtle);
+      margin-left: 4px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      cursor: pointer;
+    }
+
+    @media (max-width: 1024px) {
+      .brand-tag { display: none; }
+      .badge-std { display: none; }
     }
 
     main {
@@ -851,23 +938,42 @@ INDEX_HTML = """
   <!-- Live Announcer for screen readers -->
   <div id="a11y-announcer" class="sr-only" role="status" aria-live="polite"></div>
 
+  <!-- STICKY HEADER -->
   <header role="banner">
-    <div class="header-inner">
-      <a href="/" class="brand" aria-label="Patchly - Home">
-        <div class="brand-icon" aria-hidden="true">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <div class="header-container">
+      <!-- Left: Logo & Brand -->
+      <a href="/" class="brand-group" aria-label="Patchly Platform Home">
+        <div class="brand-logo-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
             <path d="m9 12 2 2 4-4"/>
           </svg>
         </div>
-        <span>Patchly</span>
+        <span class="brand-name">Patchly</span>
+        <span class="brand-tag">Accessibility Intelligence</span>
       </a>
-      <div class="badge-wcag">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-          <circle cx="12" cy="12" r="10"></circle>
-          <path d="m9 12 2 2 4-4"></path>
-        </svg>
-        <span>WCAG 2.1 AA Compliant Auditor</span>
+
+      <!-- Center Nav Links -->
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="#" class="nav-link active" onclick="switchMainView('audit'); return false;">Dashboard</a></li>
+          <li><a href="#" class="nav-link" onclick="switchMainView('testruns'); return false;">Audits & Crawls</a></li>
+          <li><a href="#" class="nav-link" onclick="switchMainView('dispute'); return false;">Dispute Portal</a></li>
+          <li><a href="#" class="nav-link" onclick="downloadExcelReport(); return false;">Reports</a></li>
+          <li><a href="https://github.com/Rachana-2007/patchlywebaccessibility" target="_blank" class="nav-link">Documentation</a></li>
+        </ul>
+      </nav>
+
+      <!-- Right: Compliance Badges & Profile -->
+      <div class="header-right">
+        <span class="badge-std badge-wcag">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          WCAG 2.1 AA
+        </span>
+        <span class="badge-std badge-508">Section 508</span>
+        <span class="badge-std badge-en">EN 301 549</span>
+
+        <div class="user-profile-avatar" title="Auditor Account">PA</div>
       </div>
     </div>
   </header>
