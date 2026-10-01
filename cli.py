@@ -75,6 +75,8 @@ def main():
         color = Fore.RED if sev == "CRITICAL" else (Fore.YELLOW if sev == "SERIOUS" else Fore.BLUE)
         print(f"{color}[{issue['flag_badge']} {sev}]{Style.RESET_ALL} {Style.BRIGHT}{issue['title']}{Style.RESET_ALL}")
         print(f"  WCAG: {issue.get('wcag_sc')}")
+        print(f"  Sec 508: {issue.get('section_508')}")
+        print(f"  EN 301 549: {issue.get('en_301_549')}")
         print(f"  Info: {issue.get('description')}")
         if issue.get("quick_fix_code"):
             print(f"  {Fore.GREEN}Quick Fix:{Style.RESET_ALL}")

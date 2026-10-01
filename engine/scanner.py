@@ -36,6 +36,7 @@ from engine.keyboard_nav import (
     audit_target_blank,
     audit_required_fields
 )
+from engine.standards_mapper import enrich_issue_with_standards, compute_standards_summary
 
 def build_css_selector(tag: Tag) -> str:
     """Generates an accurate, unique CSS selector to target the element in the DOM."""
@@ -208,10 +209,11 @@ def scan_html(html_content: str, source_url: Optional[str] = None) -> Dict[str, 
     # Filter out any issues tagged as Robust if any exist
     filtered_issues = [i for i in all_issues if i.get("principle") != "Robust"]
 
-    # Assign sequential flag numbers (#1, #2, ...)
+    # Assign sequential flag numbers (#1, #2, ...) and enrich with multi-standard criteria
     for idx, issue in enumerate(filtered_issues, start=1):
         issue["flag_id"] = idx
         issue["flag_badge"] = f"#{idx}"
+        enrich_issue_with_standards(issue)
 
     # Aggregate metrics
     severity_counts = {"CRITICAL": 0, "SERIOUS": 0, "MODERATE": 0, "MINOR": 0}
@@ -224,12 +226,15 @@ def scan_html(html_content: str, source_url: Optional[str] = None) -> Dict[str, 
         prn = issue.get("principle", "Perceivable")
         principle_counts[prn] = principle_counts.get(prn, 0) + 1
 
+    standards_summary = compute_standards_summary(filtered_issues)
+
     return {
         "success": True,
         "source": source_url or "Direct HTML Upload",
         "total_flags": len(filtered_issues),
         "severity_summary": severity_counts,
         "principle_summary": principle_counts,
+        "standards_summary": standards_summary,
         "issues": filtered_issues
     }
 

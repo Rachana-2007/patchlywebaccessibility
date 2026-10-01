@@ -12,12 +12,14 @@ from engine.scanner import scan_html, scan_url
 from engine.overlay_injector import inject_visual_overlay
 from engine.excel_exporter import generate_accessibility_excel
 from engine.ml_assistant import ml_assistant
+from engine.standards_mapper import compute_standards_summary
 
 app = Flask(__name__)
 SAMPLE_FILE_PATH = os.path.join(os.path.dirname(__file__), "sample_inaccessible_page.html")
 
-# In-memory storage for scan sessions to allow visual overlay inspection of custom/uploaded pages
+# In-memory storage for scan sessions & false positive dispute portal logs
 AUDIT_STORE = {}
+FALSE_POSITIVES_STORE = []
 
 def clean_old_audits():
     """Prune audits older than 2 hours to avoid memory growth."""
@@ -1569,6 +1571,99 @@ def export_excel():
         as_attachment=True,
         download_name="Patchly_Accessibility_Assessment.xlsx"
     )
+
+@app.route("/api/log-false-positive", methods=["POST"])
+def api_log_false_positive():
+    """
+    False Positive Dispute Portal API:
+    Allows human reviewers to log false positives with explanations.
+    The AI Auditor evaluates the dispute and automatically resolves valid tickets.
+    """
+    data = request.get_json() or {}
+    audit_id = data.get("audit_id")
+    flag_id = data.get("flag_id")
+    user_explanation = data.get("user_explanation", "").strip()
+    logged_by = data.get("logged_by", "Human Auditor").strip() or "Human Auditor"
+
+    if not user_explanation:
+        return jsonify({"success": False, "error": "Please provide an explanation for why this is a false positive."}), 400
+
+    audit_session = AUDIT_STORE.get(audit_id)
+    target_issue = None
+
+    if audit_session and "results" in audit_session:
+        for issue in audit_session["results"].get("issues", []):
+            if str(issue.get("flag_id")) == str(flag_id):
+                target_issue = issue
+                break
+
+    if not target_issue:
+        # Standalone or legacy fallback
+        target_issue = {
+            "flag_id": flag_id or 1,
+            "rule_id": data.get("rule_id", "custom-dispute"),
+            "title": data.get("title", "Auditor Flagged Barrier"),
+            "wcag_sc": data.get("wcag_sc", "WCAG 2.1 Criteria"),
+            "section_508": data.get("section_508", "§ 1194.22 / E205.4"),
+            "en_301_549": data.get("en_301_549", "Clause 9 Web Accessibility"),
+            "severity": data.get("severity", "MODERATE")
+        }
+
+    # AI Auditor Evaluation
+    ai_eval = ml_assistant.evaluate_false_positive_dispute(
+        target_issue,
+        user_explanation,
+        logged_by=logged_by
+    )
+
+    ticket_id = "fp-" + str(uuid.uuid4())[:8]
+    ticket = {
+        "id": ticket_id,
+        "audit_id": audit_id or "standalone",
+        "flag_id": target_issue.get("flag_id"),
+        "rule_id": target_issue.get("rule_id"),
+        "issue_title": target_issue.get("title"),
+        "wcag_sc": target_issue.get("wcag_sc"),
+        "section_508": target_issue.get("section_508"),
+        "en_301_549": target_issue.get("en_301_549"),
+        "user_explanation": user_explanation,
+        "logged_by": logged_by,
+        "logged_at": time.strftime("%Y-%m-%d %H:%M:%S"),
+        "status": ai_eval["status"],
+        "is_approved": ai_eval["is_approved"],
+        "ai_verdict": ai_eval["ai_verdict"],
+        "ai_explanation": ai_eval["ai_explanation"],
+        "confidence": ai_eval.get("confidence", 0.94)
+    }
+
+    # If approved by AI Auditor, mark issue as resolved in audit session & recalculate health score
+    if ai_eval["is_approved"] and audit_session:
+        target_issue["is_false_positive"] = True
+        target_issue["dispute_ticket_id"] = ticket_id
+        target_issue["ai_verdict"] = ai_eval["ai_verdict"]
+
+        issues = audit_session["results"]["issues"]
+        audit_session["results"]["health"] = ml_assistant.compute_accessibility_score(issues)
+        audit_session["results"]["standards_summary"] = compute_standards_summary(issues)
+        ticket["updated_health"] = audit_session["results"]["health"]
+        ticket["updated_standards"] = audit_session["results"]["standards_summary"]
+
+    FALSE_POSITIVES_STORE.insert(0, ticket)
+
+    return jsonify({
+        "success": True,
+        "ticket": ticket,
+        "audit_updated": audit_session is not None and ai_eval["is_approved"]
+    })
+
+@app.route("/api/false-positives", methods=["GET"])
+def api_get_false_positives():
+    """Returns all logged false positive dispute tickets and their AI resolution status."""
+    return jsonify({
+        "success": True,
+        "total_tickets": len(FALSE_POSITIVES_STORE),
+        "tickets": FALSE_POSITIVES_STORE
+    })
 
 if __name__ == "__main__":
     print("🚀 Patchly A11y Server starting at http://127.0.0.1:5000 ...")

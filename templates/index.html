@@ -827,12 +827,20 @@
         </div>
         <span>Patchly</span>
       </a>
-      <div class="badge-wcag">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-          <circle cx="12" cy="12" r="10"></circle>
-          <path d="m9 12 2 2 4-4"></path>
-        </svg>
-        <span>WCAG 2.1 AA Compliant Auditor</span>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+        <div class="badge-wcag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="m9 12 2 2 4-4"></path>
+          </svg>
+          <span>WCAG 2.1 AA</span>
+        </div>
+        <div class="badge-wcag" style="background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe;">
+          <span>Section 508 (US)</span>
+        </div>
+        <div class="badge-wcag" style="background: #fdf2f8; color: #be185d; border-color: #fbcfe8;">
+          <span>EN 301 549 (EU)</span>
+        </div>
       </div>
     </div>
   </header>
@@ -1028,6 +1036,27 @@
         </div>
       </div>
 
+      <!-- Multi-Standard Compliance Status Grid (WCAG, Section 508, EN 301 549) -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 28px;">
+        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 14px; padding: 18px 20px; box-shadow: var(--shadow-sm);">
+          <div style="font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px;">WCAG 2.1 AA Standard</div>
+          <div style="font-size: 1.25rem; font-weight: 800; color: var(--text-main);" id="wcag-compliance-rate">--% Pass Rate</div>
+          <div style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px;" id="wcag-compliance-status">W3C Recommendation Guidelines</div>
+        </div>
+
+        <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 14px; padding: 18px 20px; box-shadow: var(--shadow-sm);">
+          <div style="font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: #0369a1; margin-bottom: 4px;">US Section 508 (36 CFR 1194)</div>
+          <div style="font-size: 1.25rem; font-weight: 800; color: #0c4a6e;" id="sec508-compliance-rate">--% Pass Rate</div>
+          <div style="font-size: 0.82rem; color: #0369a1; margin-top: 4px;" id="sec508-compliance-status">Federal ICT Standards Compliance</div>
+        </div>
+
+        <div style="background: #fdf2f8; border: 1px solid #fbcfe8; border-radius: 14px; padding: 18px 20px; box-shadow: var(--shadow-sm);">
+          <div style="font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: #be185d; margin-bottom: 4px;">EU EN 301 549 (V3.2.1)</div>
+          <div style="font-size: 1.25rem; font-weight: 800; color: #831843;" id="en301-compliance-rate">--% Pass Rate</div>
+          <div style="font-size: 0.82rem; color: #be185d; margin-top: 4px;" id="en301-compliance-status">European Standard Clause 9 ICT</div>
+        </div>
+      </div>
+
       <!-- Filter Toolbar -->
       <div class="filter-toolbar">
         <div class="filter-group">
@@ -1053,7 +1082,66 @@
         <!-- Dynamically rendered items -->
       </div>
     </section>
+
+    <!-- False Positive & Dispute Log Feed Section -->
+    <section id="dispute-portal-section" style="margin-top: 48px;" aria-labelledby="dispute-portal-heading">
+      <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 30px; box-shadow: var(--shadow-md);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 14px;">
+          <div>
+            <h3 id="dispute-portal-heading" style="font-size: 1.4rem; font-weight: 800; color: var(--text-main);">🛡️ Human Auditor False Positive Logging & AI Resolution Portal</h3>
+            <p style="font-size: 0.92rem; color: var(--text-muted); margin-top: 2px;">Log disputed flags upon manual inspection. The AI Auditor evaluates auditor rationale against WCAG 2.1, Section 508, and EN 301 549 guidelines to automatically resolve issues.</p>
+          </div>
+          <button type="button" class="btn btn-secondary" onclick="loadFalsePositiveTickets()" style="font-weight: 700;">
+            🔄 Refresh Ticket Log
+          </button>
+        </div>
+        <div id="dispute-tickets-container">
+          <div style="text-align: center; padding: 30px; color: var(--text-muted); font-size: 0.95rem;">
+            No false positive disputes logged yet. Click "Log False Positive" on any audit barrier flag to dispute it.
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <!-- False Positive Modal -->
+  <div id="disputeModal" role="dialog" aria-modal="true" aria-labelledby="modal-title" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(4px); z-index: 999; align-items: center; justify-content: center; padding: 20px;">
+    <div style="background: #ffffff; border-radius: 20px; max-width: 640px; width: 100%; padding: 32px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); border: 1px solid var(--border-subtle);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h3 id="modal-title" style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 10px;">
+          <span>🛡️ Log False Positive Dispute</span>
+        </h3>
+        <button type="button" onclick="closeDisputeModal()" aria-label="Close modal" style="background: none; border: none; font-size: 1.6rem; cursor: pointer; color: var(--text-muted); line-height: 1;">&times;</button>
+      </div>
+      <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 20px;">
+        Provide detailed explanation from your manual human inspection. The Patchly AI Auditor will analyze your technical context, verify against WCAG 2.1, Section 508, and EN 301 549 rules, and auto-resolve the barrier.
+      </p>
+
+      <form id="disputeForm" onsubmit="submitFalsePositiveDispute(event)">
+        <input type="hidden" id="dispute-flag-id">
+        <input type="hidden" id="dispute-rule-id">
+        <input type="hidden" id="dispute-issue-title">
+        <input type="hidden" id="dispute-wcag">
+        <input type="hidden" id="dispute-sec508">
+        <input type="hidden" id="dispute-en301">
+
+        <div style="margin-bottom: 16px;">
+          <label for="dispute-auditor-name" style="display: block; font-size: 0.825rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;">Auditor / Reviewer Name</label>
+          <input type="text" id="dispute-auditor-name" placeholder="e.g. Lead QA / Accessibility Tester" value="Human Auditor" required style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1.5px solid var(--border-strong); font-size: 0.95rem;">
+        </div>
+
+        <div style="margin-bottom: 22px;">
+          <label for="dispute-explanation" style="display: block; font-size: 0.825rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;">Technical Explanation Rationale</label>
+          <textarea id="dispute-explanation" rows="4" placeholder="Explain why this issue is a false positive (e.g. 'Contrast is provided by dynamic SVG background', 'ARIA role is set dynamically by JavaScript', or 'Decorative icon with parent label')..." required style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1.5px solid var(--border-strong); font-size: 0.95rem; font-family: inherit; resize: vertical;"></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px;">
+          <button type="button" class="btn btn-secondary" onclick="closeDisputeModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="font-weight: 800;">Submit to AI Auditor</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <footer>
     <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
@@ -1267,6 +1355,12 @@
       document.getElementById('count-serious').textContent = serious;
       document.getElementById('count-moderate').textContent = moderate;
 
+      if (data.standards_summary) {
+        document.getElementById('wcag-compliance-rate').textContent = (data.standards_summary.wcag_21 ? data.standards_summary.wcag_21.compliance_rate : '--%') + ' Pass Rate';
+        document.getElementById('sec508-compliance-rate').textContent = (data.standards_summary.section_508 ? data.standards_summary.section_508.compliance_rate : '--%') + ' Pass Rate';
+        document.getElementById('en301-compliance-rate').textContent = (data.standards_summary.en_301_549 ? data.standards_summary.en_301_549.compliance_rate : '--%') + ' Pass Rate';
+      }
+
       const btnInspect = document.getElementById('btn-inspect');
       if (currentAuditId) {
         btnInspect.disabled = false;
@@ -1274,6 +1368,7 @@
       }
 
       renderIssues();
+      loadFalsePositiveTickets();
       announce(`Audit complete. Found ${total} barriers across Principles 1, 2, and 3.`);
       resultsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -1335,13 +1430,27 @@
             </div>
           </div>
 
-          <div class="issue-meta-bar">
-            <span class="wcag-sc-tag">${escapeHtml(issue.wcag_sc || 'WCAG 2.1')}</span>
-            <span>&bull;</span>
+          <div class="issue-meta-bar" style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px;">
+            <span class="wcag-sc-tag" style="background: #eef2ff; color: #4338ca; padding: 4px 8px; border-radius: 6px; font-weight: 700; font-size: 0.8rem;">${escapeHtml(issue.wcag_sc || 'WCAG 2.1')}</span>
+            <span style="background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; padding: 4px 8px; border-radius: 6px; font-weight: 600; font-size: 0.8rem;">Section 508: ${escapeHtml(issue.section_508 || '§ 1194.22')}</span>
+            <span style="background: #fdf2f8; color: #be185d; border: 1px solid #fbcfe8; padding: 4px 8px; border-radius: 6px; font-weight: 600; font-size: 0.8rem;">EN 301 549: ${escapeHtml(issue.en_301_549 || 'Clause 9')}</span>
+            <span style="color: var(--text-muted);">&bull;</span>
             <span>Element: <code class="target-tag">&lt;${escapeHtml(issue.element_tag || 'div')}&gt;</code></span>
           </div>
 
           <p class="issue-desc">${escapeHtml(issue.description || '')}</p>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 10px; flex-wrap: wrap;">
+            ${issue.is_false_positive ? `
+              <span style="background: var(--success-bg); color: var(--success-text); border: 1px solid var(--success-border); padding: 6px 14px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+                ✓ False Positive Resolved by AI Auditor
+              </span>
+            ` : `
+              <button type="button" onclick="openDisputeModal(${issue.flag_id})" style="font-size: 0.85rem; padding: 6px 14px; background: #ffffff; border: 1.5px solid var(--border-strong); color: var(--text-main); font-weight: 700; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                🛡️ Log False Positive
+              </button>
+            `}
+          </div>
 
           <!-- Quick Fix Section -->
           <div class="quick-fix-panel">
@@ -1412,6 +1521,127 @@
         a.remove();
       })
       .catch(err => { hideLoading(); alert('Export failed: ' + err.message); });
+    }
+
+    function openDisputeModal(flagId) {
+      const issue = currentIssues.find(i => String(i.flag_id) === String(flagId));
+      if (!issue) return;
+      document.getElementById('dispute-flag-id').value = issue.flag_id;
+      document.getElementById('dispute-rule-id').value = issue.rule_id || '';
+      document.getElementById('dispute-issue-title').value = issue.title || '';
+      document.getElementById('dispute-wcag').value = issue.wcag_sc || '';
+      document.getElementById('dispute-sec508').value = issue.section_508 || '';
+      document.getElementById('dispute-en301').value = issue.en_301_549 || '';
+      document.getElementById('dispute-explanation').value = '';
+      
+      const modal = document.getElementById('disputeModal');
+      modal.style.display = 'flex';
+      document.getElementById('dispute-explanation').focus();
+    }
+
+    function closeDisputeModal() {
+      document.getElementById('disputeModal').style.display = 'none';
+    }
+
+    function submitFalsePositiveDispute(event) {
+      event.preventDefault();
+      const flagId = document.getElementById('dispute-flag-id').value;
+      const explanation = document.getElementById('dispute-explanation').value.trim();
+      const auditorName = document.getElementById('dispute-auditor-name').value.trim() || 'Human Auditor';
+
+      if (!explanation) return alert('Please provide an explanation.');
+
+      showLoading('Evaluating False Positive Dispute with AI Auditor...');
+      closeDisputeModal();
+
+      fetch('/api/log-false-positive', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          audit_id: currentAuditId,
+          flag_id: flagId,
+          user_explanation: explanation,
+          logged_by: auditorName,
+          rule_id: document.getElementById('dispute-rule-id').value,
+          title: document.getElementById('dispute-issue-title').value,
+          wcag_sc: document.getElementById('dispute-wcag').value,
+          section_508: document.getElementById('dispute-sec508').value,
+          en_301_549: document.getElementById('dispute-en301').value
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        hideLoading();
+        if (!data.success) {
+          alert('Dispute Submission Error: ' + (data.error || 'Server error'));
+          return;
+        }
+
+        const ticket = data.ticket;
+        if (ticket.is_approved) {
+          alert('✓ AI Auditor Verdict: ' + ticket.ai_verdict + '\n\n' + ticket.ai_explanation);
+          const targetIssue = currentIssues.find(i => String(i.flag_id) === String(flagId));
+          if (targetIssue) targetIssue.is_false_positive = true;
+
+          if (ticket.updated_health) {
+            document.getElementById('score-val').textContent = ticket.updated_health.score;
+            document.getElementById('score-grade-badge').textContent = 'Grade: ' + ticket.updated_health.grade;
+            document.getElementById('score-status-desc').textContent = ticket.updated_health.status;
+          }
+          if (ticket.updated_standards) {
+            document.getElementById('wcag-compliance-rate').textContent = (ticket.updated_standards.wcag_21 ? ticket.updated_standards.wcag_21.compliance_rate : '--%') + ' Pass Rate';
+            document.getElementById('sec508-compliance-rate').textContent = (ticket.updated_standards.section_508 ? ticket.updated_standards.section_508.compliance_rate : '--%') + ' Pass Rate';
+            document.getElementById('en301-compliance-rate').textContent = (ticket.updated_standards.en_301_549 ? ticket.updated_standards.en_301_549.compliance_rate : '--%') + ' Pass Rate';
+          }
+          renderIssues();
+        } else {
+          alert('❌ AI Auditor Verdict: ' + ticket.ai_verdict + '\n\n' + ticket.ai_explanation);
+        }
+
+        loadFalsePositiveTickets();
+      })
+      .catch(err => { hideLoading(); alert('Dispute Error: ' + err.message); });
+    }
+
+    function loadFalsePositiveTickets() {
+      fetch('/api/false-positives')
+      .then(res => res.json())
+      .then(data => {
+        if (!data.success) return;
+        const container = document.getElementById('dispute-tickets-container');
+        if (!data.tickets || data.tickets.length === 0) {
+          container.innerHTML = `
+            <div style="text-align: center; padding: 30px; color: var(--text-muted); font-size: 0.95rem;">
+              No false positive disputes logged yet. Click "Log False Positive" on any audit barrier flag to dispute it.
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = data.tickets.map(t => `
+          <div style="background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: 14px; padding: 20px; margin-bottom: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
+              <div>
+                <span style="background: var(--primary-light); color: var(--primary); font-weight: 800; font-size: 0.8rem; padding: 3px 8px; border-radius: 6px;">TICKET ${escapeHtml(t.id)}</span>
+                <strong style="margin-left: 8px; font-size: 1.05rem;">${escapeHtml(t.issue_title || 'Disputed Barrier')}</strong>
+              </div>
+              <span style="background: ${t.is_approved ? 'var(--success-bg)' : 'var(--critical-bg)'}; color: ${t.is_approved ? 'var(--success-text)' : 'var(--critical-text)'}; padding: 4px 12px; border-radius: 9999px; font-weight: 800; font-size: 0.825rem;">
+                ${escapeHtml(t.status)}
+              </span>
+            </div>
+            <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">
+              Logged by <strong>${escapeHtml(t.logged_by)}</strong> on ${escapeHtml(t.logged_at)} &bull; ${escapeHtml(t.wcag_sc || '')} | ${escapeHtml(t.section_508 || '')} | ${escapeHtml(t.en_301_549 || '')}
+            </div>
+            <div style="background: #ffffff; border: 1px solid var(--border-subtle); padding: 12px; border-radius: 8px; font-size: 0.9rem; margin-bottom: 10px;">
+              💬 <strong>Auditor Explanation:</strong> "${escapeHtml(t.user_explanation)}"
+            </div>
+            <div style="background: ${t.is_approved ? '#f0fdf4' : '#fef2f2'}; border: 1px solid ${t.is_approved ? '#bbf7d0' : '#fecaca'}; padding: 12px; border-radius: 8px; font-size: 0.875rem; color: ${t.is_approved ? '#166534' : '#991b1b'};">
+              🤖 <strong>AI Auditor Analysis:</strong> ${escapeHtml(t.ai_explanation)}
+            </div>
+          </div>
+        `).join('');
+      })
+      .catch(() => {});
     }
   </script>
 </body>
