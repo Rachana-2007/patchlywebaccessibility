@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  patchly:
+    build: .
+    container_name: patchly_web
+    ports:
+      - "5000:5000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped

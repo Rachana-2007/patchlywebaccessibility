@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<!-- =======================================================================
+     APEXFLOW ENTERPRISE - SAMPLE INACCESSIBLE FIXTURE
+     Purposely designed to violate WCAG 2.1 Principles 1, 2, and 3 criteria.
+     (Note: Principle 4 Robust guidelines are excluded per design specification).
+======================================================================== -->
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- FLAW 1 (WCAG 1.3.4 / 1.4.4 - Perceivable): Viewport disabling pinch-to-zoom -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+  
+  <!-- FLAW 2 (WCAG 2.4.2 - Operable): Missing or uninformative page title -->
+
+  <style>
+    /* Global Reset & Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #ffffff;
+      color: #334155;
+      line-height: 1.6;
+    }
+
+    /* FLAW 3 (WCAG 2.4.7 - Operable): Focus outline suppression */
+    a:focus, button:focus, input:focus, div:focus, select:focus {
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    /* Navigation */
+    header {
+      background: #ffffff;
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #0f172a;
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    /* FLAW 4 (WCAG 1.4.3 - Perceivable): Low color contrast navigation text (#94a3b8 on white = ~2.4:1) */
+    .nav-link {
+      text-decoration: none;
+      color: #94a3b8;
+      font-size: 0.95rem;
+    }
+
+    /* FLAW 5 (WCAG 2.1.1 - Operable): Non-semantic interactive element (div acting as button) */
+    .fake-btn-cta {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: #ffffff;
+      padding: 10px 22px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      user-select: none;
+    }
+
+    /* Hero Section */
+    .hero {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 20px 32px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero-text p {
+      color: #64748b;
+      font-size: 1.1rem;
+      margin-bottom: 24px;
+    }
+
+    /* FLAW 6 (WCAG 1.4.1 - Perceivable): Inline link relying solely on color without underline */
+    .inline-color-link {
+      color: #4f46e5;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* Card Grid */
+    .card-grid {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 32px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 24px;
+    }
+
+    /* FLAW 7 (WCAG 2.5.8 - Operable): Touch target smaller than 24x24px */
+    .tiny-btn {
+      width: 16px;
+      height: 16px;
+      background: #ef4444;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* Form Section */
+    .form-section {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 16px;
+      padding: 32px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+    }
+
+    /* FLAW 8 (WCAG 2.3.1 - Operable): Deprecated flickering marquee tag */
+    marquee {
+      background: #fef3c7;
+      color: #92400e;
+      padding: 10px;
+      font-weight: 700;
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- FLAW 9 (WCAG 2.4.1 - Operable): Missing Skip Navigation Link and <main> Landmark -->
+
+  <header>
+    <div class="brand">
+      <!-- FLAW 10 (WCAG 1.1.1 - Perceivable): SVG icon logo without aria-label or title -->
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2.5">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="m9 12 2 2 4-4"></path>
+      </svg>
+      <span>ApexFlow Cloud</span>
+    </div>
+
+    <nav>
+      <!-- FLAW 11 (WCAG 1.4.3 - Perceivable): Low contrast text links -->
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#pricing" class="nav-link">Pricing</a>
+      
+      <!-- FLAW 12 (WCAG 2.1.1 - Operable): Clickable div CTA button lacking keyboard support -->
+      <div class="fake-btn-cta" onclick="alert('Trial started!')">
+        Start Free Trial
+      </div>
+
+      <!-- FLAW 13 (WCAG 2.4.6 / 1.1.1 - Operable): Icon-only button without label -->
+      <button type="button" style="background: none; border: none; cursor: pointer;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </button>
+    </nav>
+  </header>
+
+  <marquee>⚡ LIMITED TIME OFFER: Upgrade to Enterprise Tier before midnight for 40% discount!</marquee>
+
+  <div class="hero">
+    <div class="hero-text">
+      <!-- FLAW 14 (WCAG 1.3.1 - Perceivable): Missing main h1 heading -->
+      
+      <!-- FLAW 15 (WCAG 1.3.1 / 2.4.6 - Perceivable/Operable): Skipped heading level (jump directly to h4) -->
+      <h4>Unified Project Tracking for Modern Teams</h4>
+
+      <p>
+        Accelerate team velocity with automated Kanban boards, real-time sync, and intelligent sprint insights. 
+        Learn more in our <a href="#details" class="inline-color-link">benchmark whitepaper</a>.
+      </p>
+
+      <!-- FLAW 16 (WCAG 2.4.4 - Operable): Ambiguous link text -->
+      <div style="margin-top: 16px;">
+        <a href="#whitepaper" style="color: #4f46e5; font-weight: 700;">click here</a> to download report.
+      </div>
+
+      <!-- FLAW 17 (WCAG 3.2.5 - Understandable): target="_blank" without unannounced warning -->
+      <div style="margin-top: 12px;">
+        <a href="https://external-demo.com" target="_blank" style="color: #0284c7;">View External Staging Portal</a>
+      </div>
+    </div>
+
+    <div>
+      <!-- FLAW 18 (WCAG 1.1.1 - Perceivable): Image completely missing alt attribute -->
+      <img src="hero_dashboard.png" width="100%" style="border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+
+      <!-- FLAW 19 (WCAG 1.1.1 - Perceivable): Image with non-descriptive placeholder alt text -->
+      <img src="team_avatar.jpg" alt="image1.png" width="48" height="48" style="border-radius: 50%; margin-top: 12px;">
+    </div>
+  </div>
+
+  <section class="card-grid">
+    <div class="card">
+      <h3>Automated Sprint Metrics</h3>
+      <p style="color: #94a3b8; margin-top: 8px;">Real-time velocity tracking and burndown calculations.</p>
+
+      <!-- FLAW 20 (WCAG 2.4.3 - Operable): Positive tabindex disrupting focus order -->
+      <button type="button" tabindex="5" style="margin-top: 16px; padding: 8px 16px; background: #3b82f6; color: white; border: none; border-radius: 6px;">
+        Explore Metrics
+      </button>
+    </div>
+
+    <div class="card">
+      <h3>Media Workspace</h3>
+      
+      <!-- FLAW 21 (WCAG 1.2.2 / 2.2.2 - Perceivable/Operable): Video missing captions track & autoplays without controls -->
+      <video autoplay loop muted style="width: 100%; border-radius: 8px; margin-top: 12px;">
+        <source src="demo_overview.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <div class="card">
+      <h3>Quick Actions</h3>
+      <p style="margin-bottom: 12px;">Dismiss notification:</p>
+      <!-- FLAW 22 (WCAG 2.5.8 - Operable): Tiny touch target -->
+      <button class="tiny-btn" title="Dismiss"></button>
+    </div>
+  </section>
+
+  <section class="form-section">
+    <h3 style="margin-bottom: 18px;">Request Enterprise Demo</h3>
+    <form action="/submit-demo" method="POST">
+      
+      <div class="form-group">
+        <!-- FLAW 23 (WCAG 1.3.1 / 3.3.2 - Perceivable/Understandable): Input missing <label> and missing required attribute -->
+        <input type="text" id="user_email" name="email" placeholder="Enter your business email *">
+      </div>
+
+      <div class="form-group">
+        <!-- FLAW 24 (WCAG 1.3.5 - Perceivable): Input missing autocomplete attribute -->
+        <label for="user_phone" style="display: block; font-weight: 600; margin-bottom: 6px;">Phone Number</label>
+        <input type="tel" id="user_phone" name="phone" placeholder="+1 (555) 000-0000">
+      </div>
+
+      <div class="form-group">
+        <!-- FLAW 25 (WCAG 3.2.2 - Understandable): Select element triggering auto-submit on change -->
+        <label for="company_size" style="display: block; font-weight: 600; margin-bottom: 6px;">Company Size</label>
+        <select id="company_size" name="size" onchange="this.form.submit()">
+          <option value="">Select size...</option>
+          <option value="1-10">1-10 employees</option>
+          <option value="10-50">10-50 employees</option>
+          <option value="50+">50+ employees</option>
+        </select>
+      </div>
+
+      <button type="submit" style="width: 100%; padding: 14px; background: #4f46e5; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">
+        Submit Request
+      </button>
+    </form>
+  </section>
+
+</body>
+</html>
