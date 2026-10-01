@@ -1820,5 +1820,5 @@ def api_get_test_run_detail(test_run_id):
     return jsonify({"success": True, "test_run": test_run})
 
 if __name__ == "__main__":
-    print("🚀 Patchly A11y Server starting at http://127.0.0.1:5000 ...")
+    print("[*] Patchly A11y Server starting at http://127.0.0.1:5000 ...")
     app.run(host="127.0.0.1", port=5000, debug=True)
