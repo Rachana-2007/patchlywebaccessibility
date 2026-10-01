@@ -13,6 +13,7 @@ from engine.overlay_injector import inject_visual_overlay
 from engine.excel_exporter import generate_accessibility_excel
 from engine.ml_assistant import ml_assistant
 from engine.standards_mapper import compute_standards_summary
+from engine.crawler import run_multi_page_test_run, run_folder_test_run, TEST_RUNS_STORE
 
 app = Flask(__name__)
 SAMPLE_FILE_PATH = os.path.join(os.path.dirname(__file__), "sample_inaccessible_page.html")
@@ -1664,6 +1665,53 @@ def api_get_false_positives():
         "total_tickets": len(FALSE_POSITIVES_STORE),
         "tickets": FALSE_POSITIVES_STORE
     })
+
+@app.route("/api/test-run/crawl", methods=["POST"])
+def api_test_run_crawl():
+    """
+    Executes a Multi-Page Crawler Test Run.
+    Splits all discovered sub-pages/URLs from entry URL and assesses each page independently.
+    """
+    data = request.get_json() or {}
+    url = data.get("url")
+    max_pages = int(data.get("max_pages", 8))
+
+    if not url:
+        return jsonify({"success": False, "error": "Please provide a target URL to crawl."}), 400
+
+    result = run_multi_page_test_run(url, max_pages=max_pages)
+    return jsonify(result)
+
+@app.route("/api/test-run/folder", methods=["POST"])
+def api_test_run_folder():
+    """
+    Audits a local directory folder containing HTML files as a batch Test Run.
+    """
+    data = request.get_json() or {}
+    folder_path = data.get("folder_path")
+
+    if not folder_path:
+        return jsonify({"success": False, "error": "Please provide a local folder path."}), 400
+
+    result = run_folder_test_run(folder_path)
+    return jsonify(result)
+
+@app.route("/api/test-runs", methods=["GET"])
+def api_get_test_runs():
+    """Lists all active batch Test Runs and summary health metrics."""
+    return jsonify({
+        "success": True,
+        "total_test_runs": len(TEST_RUNS_STORE),
+        "test_runs": list(TEST_RUNS_STORE.values())
+    })
+
+@app.route("/api/test-run/<test_run_id>", methods=["GET"])
+def api_get_test_run_detail(test_run_id):
+    """Returns detailed split sub-page results for a specific Test Run."""
+    test_run = TEST_RUNS_STORE.get(test_run_id)
+    if not test_run:
+        return jsonify({"success": False, "error": "Test Run not found or expired."}), 404
+    return jsonify({"success": True, "test_run": test_run})
 
 if __name__ == "__main__":
     print("🚀 Patchly A11y Server starting at http://127.0.0.1:5000 ...")

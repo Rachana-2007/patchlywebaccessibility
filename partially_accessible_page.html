@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acme Tech Portal - Partially Accessible Demo Page</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8fafc;
+      color: #0f172a;
+      line-height: 1.6;
+    }
+
+    /* Accessible Header Banner */
+    header {
+      background-color: #1e293b;
+      color: #ffffff;
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    nav a {
+      color: #e2e8f0;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 600;
+    }
+
+    nav a:hover, nav a:focus {
+      color: #38bdf8;
+      text-decoration: underline;
+    }
+
+    main {
+      max-width: 960px;
+      margin: 40px auto;
+      padding: 0 24px;
+    }
+
+    .card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 28px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      color: #0f172a;
+      margin-top: 0;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      color: #334155;
+      margin-bottom: 12px;
+    }
+
+    /* Accessible Button */
+    .btn-accessible {
+      background-color: #4338ca; /* High contrast > 7:1 against white */
+      color: #ffffff;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* INACCESSIBLE FLAG 1: Low Contrast Text (2.5:1 ratio) */
+    .subtle-info-text {
+      color: #94a3b8; /* Fails WCAG AA 4.5:1 contrast requirement */
+      font-size: 0.9rem;
+      margin-top: 6px;
+    }
+
+    /* INACCESSIBLE FLAG 2: Non-semantic clickable DIV (Keyboard Inaccessible) */
+    .fake-btn-cta {
+      background-color: #0284c7;
+      color: #ffffff;
+      padding: 12px 24px;
+      border-radius: 8px;
+      display: inline-block;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"], input[type="email"] {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Accessible Skip Navigation Link (WCAG 2.4.1) -->
+  <a href="#main-content" style="position: absolute; top: -50px; left: 10px; background: #4338ca; color: white; padding: 10px; z-index: 100;" onfocus="this.style.top='10px'" onblur="this.style.top='-50px'">Skip to main content</a>
+
+  <!-- Header & Navigation -->
+  <header role="banner">
+    <div class="brand">
+      <!-- INACCESSIBLE FLAG 3: Image missing alt text (WCAG 1.1.1 / Sec 508 / EN 301 549) -->
+      <img src="https://via.placeholder.com/40x40" width="40" height="40">
+      <span>Acme Tech Enterprise</span>
+    </div>
+    <nav aria-label="Main Navigation">
+      <a href="#features">Features</a>
+      <a href="#services">Services</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Main Content Landmark -->
+  <main id="main-content">
+    
+    <!-- ACCESSIBLE SECTION: Heading Structure & High Contrast Button -->
+    <section class="card">
+      <h1>Cloud Platform & Accessibility Management</h1>
+      <p>Welcome to Acme Tech's hybrid enterprise dashboard. We combine automated telemetry with human-in-the-loop verification to ensure high digital compliance.</p>
+      
+      <button type="button" class="btn-accessible" onclick="alert('Action triggered!')">
+        Launch System Audit
+      </button>
+
+      <!-- INACCESSIBLE FLAG 1: Low contrast text -->
+      <p class="subtle-info-text">
+        System Status: All services operating at optimal throughput (Telemetry v4.2).
+      </p>
+    </section>
+
+    <!-- INACCESSIBLE SECTION: Interactive DIV & Missing Labels -->
+    <section class="card">
+      <h2>Newsletter & Customer Feedback</h2>
+      <p>Subscribe to receive quarterly security and accessibility updates directly to your inbox.</p>
+
+      <form action="#" method="post">
+        <!-- INACCESSIBLE FLAG 4: Form input missing associated <label> tag -->
+        <div class="form-group">
+          <input type="email" id="user_email_input" placeholder="Enter your email address...">
+          <span style="font-size: 0.8rem; color: #64748b;">We respect your privacy. Unsubscribe anytime.</span>
+        </div>
+
+        <!-- INACCESSIBLE FLAG 2: Non-keyboard focusable div button -->
+        <div class="fake-btn-cta" onclick="alert('Form submitted!')">
+          Submit Subscription
+        </div>
+      </form>
+    </section>
+
+    <!-- FALSE POSITIVE CANDIDATE SECTION: Inline decorative SVG needing false positive dispute context -->
+    <section class="card">
+      <h2>Enterprise Compliance Standards</h2>
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <!-- SVG Icon without aria-hidden (triggers scanner flag, can be disputed as False Positive when parent context explains it) -->
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#4338ca" stroke-width="2">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+        <div>
+          <strong>WCAG 2.1 AA, US Section 508, and EU EN 301 549 Verified</strong>
+          <div style="font-size: 0.85rem; color: #475569;">Multi-region legal compliance tracking enabled across all digital assets.</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer style="text-align: center; padding: 24px; color: #64748b; font-size: 0.85rem; border-top: 1px solid #e2e8f0;">
+    &copy; 2026 Acme Tech Inc. All rights reserved. &bull; Designed for WCAG 2.1 AA Evaluation.
+  </footer>
+
+</body>
+</html>
