@@ -3,59 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Patchly - Accessible Web Accessibility Scanner & Remediation</title>
-  <meta name="description" content="Audit web accessibility barriers against WCAG 2.1 Principles 1, 2, and 3 with automated checks, HTML file uploads, interactive visual overlay inspection, and instant quick-fix remediation.">
+  <title>Patchly — AI-Powered Web Accessibility Auditing & Remediation Platform</title>
+  <meta name="description" content="Enterprise accessibility auditing platform for WCAG 2.1 AA, US Section 508, and EU EN 301 549 compliance. Automated testing, multi-page crawling, AI remediation fixes, and false positive dispute resolution.">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
   <style>
     :root {
-      /* WCAG AAA/AA Compliant Light Theme Palette */
-      --bg-surface: #f8fafc;
+      /* Refined SaaS Brand Palette */
+      --bg-main: #f8fafc;
       --bg-card: #ffffff;
+      --bg-card-alt: #f1f5f9;
       --border-subtle: #e2e8f0;
       --border-strong: #cbd5e1;
       
-      /* High-contrast brand colors (7.3:1 contrast against white) */
+      /* Primary Brand Colors (Refined Purple/Indigo) */
       --primary: #4338ca;
       --primary-hover: #3730a3;
       --primary-light: #eef2ff;
-      --primary-ring: rgba(67, 56, 202, 0.25);
+      --primary-border: #c7d2fe;
+      --primary-ring: rgba(67, 56, 202, 0.2);
       
-      /* Accessible text colors */
-      --text-main: #0f172a;       /* Slate 900: 16:1 contrast on white */
-      --text-secondary: #334155;  /* Slate 700: 9.6:1 contrast on white */
-      --text-muted: #475569;      /* Slate 600: 5.7:1 contrast on white (WCAG AA > 4.5:1) */
+      /* Dark Navy Typography Tokens */
+      --text-main: #0f172a;       /* Dark Navy Slate 900 */
+      --text-secondary: #334155;  /* Slate 700 */
+      --text-muted: #64748b;      /* Slate 500 */
       
-      /* Accessible status & severity tokens (>= 4.5:1 text on tag backgrounds) */
+      /* Accessible Severity & Status Indicators */
+      --pass-text: #065f46;
+      --pass-bg: #ecfdf5;
+      --pass-border: #a7f3d0;
+
+      --warn-text: #92400e;
+      --warn-bg: #fffbeb;
+      --warn-border: #fde68a;
+
       --critical-text: #991b1b;
-      --critical-bg: #fee2e2;
-      --critical-border: #fca5a5;
+      --critical-bg: #fef2f2;
+      --critical-border: #fecaca;
 
       --serious-text: #9a3412;
-      --serious-bg: #ffedd5;
-      --serious-border: #fdba74;
-
-      --moderate-text: #854d0e;
-      --moderate-bg: #fef9c3;
-      --moderate-border: #fde047;
-
-      --success-text: #065f46;
-      --success-bg: #d1fae5;
-      --success-border: #6ee7b7;
-
-      --info-text: #0369a1;
-      --info-bg: #e0f2fe;
-      --info-border: #7dd3fc;
-
-      --purple-text: #6b21a8;
-      --purple-bg: #f3e8ff;
-      --purple-border: #d8b4fe;
+      --serious-bg: #fff7ed;
+      --serious-border: #ffedd5;
       
-      /* Shadow tokens */
-      --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
-      --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
-      --shadow-lg: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+      --info-text: #1e40af;
+      --info-bg: #eff6ff;
+      --info-border: #bfdbfe;
+      
+      /* Shadows */
+      --shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.06), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+      --shadow-lg: 0 12px 32px -6px rgba(15, 23, 42, 0.08), 0 4px 12px -4px rgba(15, 23, 42, 0.04);
     }
 
     *, *::before, *::after {
@@ -65,37 +65,37 @@
     }
 
     body {
-      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg-surface);
-      background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
-      background-size: 24px 24px;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-main);
+      background-image: radial-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px);
+      background-size: 32px 32px;
       color: var(--text-main);
-      line-height: 1.6;
+      line-height: 1.5;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Accessibility: Skip Link for Keyboard Nav */
+    /* Accessibility Focus & Skip Link */
     .skip-link {
       position: absolute;
-      top: -60px;
-      left: 16px;
+      top: -70px;
+      left: 20px;
       background: var(--primary);
       color: #ffffff;
       padding: 12px 20px;
       font-weight: 700;
-      font-size: 0.95rem;
       border-radius: 8px;
-      z-index: 1000;
+      z-index: 9999;
       text-decoration: none;
       box-shadow: var(--shadow-lg);
-      transition: top 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: top 0.2s ease;
     }
     .skip-link:focus {
-      top: 16px;
+      top: 20px;
       outline: 3px solid #1e1b4b;
-      outline-offset: 2px;
+      outline-offset: 3px;
     }
 
     *:focus-visible {
@@ -115,166 +115,329 @@
       border: 0;
     }
 
-    /* Header Navigation */
+    /* HEADER */
     header {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-subtle);
-      padding: 18px 32px;
       position: sticky;
       top: 0;
-      z-index: 90;
+      z-index: 100;
       box-shadow: var(--shadow-sm);
     }
-    .header-inner {
-      max-width: 1200px;
+    .header-container {
+      max-width: 1380px;
       margin: 0 auto;
+      padding: 14px 28px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      gap: 24px;
     }
-    .brand {
+    .brand-group {
       display: flex;
       align-items: center;
       gap: 12px;
-      font-size: 1.35rem;
-      font-weight: 800;
-      color: var(--text-main);
       text-decoration: none;
-      letter-spacing: -0.5px;
+      color: var(--text-main);
     }
-    .brand-icon {
-      background: var(--primary-light);
-      color: var(--primary);
-      border: 1px solid rgba(67, 56, 202, 0.2);
+    .brand-logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--primary);
+      color: #ffffff;
       border-radius: 10px;
-      width: 40px;
-      height: 40px;
       display: flex;
       align-items: center;
       justify-content: center;
+      box-shadow: 0 4px 10px rgba(67, 56, 202, 0.25);
     }
-    .badge-wcag {
+    .brand-name {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .brand-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
       background: var(--primary-light);
       color: var(--primary);
-      font-size: 0.8rem;
+      border: 1px solid var(--primary-border);
+      padding: 2px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      list-style: none;
+    }
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 0.925rem;
+      font-weight: 600;
+      transition: color 0.15s ease;
+    }
+    .nav-link:hover, .nav-link.active {
+      color: var(--primary);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .badge-std {
+      font-size: 0.775rem;
       font-weight: 700;
-      padding: 6px 14px;
+      padding: 5px 10px;
       border-radius: 9999px;
-      border: 1px solid rgba(67, 56, 202, 0.15);
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
+    }
+    .badge-wcag { background: var(--primary-light); color: var(--primary); border: 1px solid var(--primary-border); }
+    .badge-508 { background: var(--info-bg); color: var(--info-text); border: 1px solid var(--info-border); }
+    .badge-en { background: #fdf2f8; color: #be185d; border: 1px solid #fbcfe8; }
+
+    .user-profile-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--text-main);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.85rem;
+      border: 2px solid var(--border-subtle);
     }
 
+    /* MAIN CONTAINER */
     main {
-      flex: 1;
-      max-width: 1200px;
+      max-width: 1380px;
       width: 100%;
-      margin: 36px auto 60px;
-      padding: 0 24px;
+      margin: 28px auto 60px;
+      padding: 0 28px;
+      flex: 1;
     }
 
-    .hero {
+    /* HERO SECTION */
+    .hero-compact {
       text-align: center;
-      margin-bottom: 36px;
+      max-width: 860px;
+      margin: 0 auto 36px;
     }
     .hero-eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.85rem;
-      font-weight: 700;
+      font-size: 0.775rem;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
       color: var(--primary);
       background: var(--primary-light);
-      padding: 4px 12px;
+      border: 1px solid var(--primary-border);
+      padding: 4px 14px;
       border-radius: 9999px;
       margin-bottom: 14px;
     }
-    .hero h1 {
-      font-size: 2.5rem;
+    .hero-compact h1 {
+      font-size: 2.75rem;
       font-weight: 800;
+      line-height: 1.15;
       letter-spacing: -0.03em;
-      line-height: 1.2;
       color: var(--text-main);
       margin-bottom: 12px;
     }
-    .hero p {
+    .hero-compact p {
+      font-size: 1.1rem;
       color: var(--text-muted);
-      font-size: 1.125rem;
-      max-width: 760px;
-      margin: 0 auto;
+      line-height: 1.55;
+      margin-bottom: 24px;
+    }
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
     }
 
-    .scanner-card {
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.18s ease-in-out;
+      border: none;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(67, 56, 202, 0.25);
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(67, 56, 202, 0.32);
+    }
+    .btn-secondary {
+      background: #ffffff;
+      color: var(--text-main);
+      border: 1.5px solid var(--border-strong);
+      box-shadow: var(--shadow-sm);
+    }
+    .btn-secondary:hover {
+      background: var(--bg-main);
+      border-color: var(--text-muted);
+      transform: translateY(-1px);
+    }
+
+    .hero-trust-indicator {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    /* PRODUCT WORKFLOW CARDS */
+    .product-workflow-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 32px;
+    }
+    @media (max-width: 900px) {
+      .product-workflow-grid { grid-template-columns: 1fr; }
+    }
+    .workflow-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .workflow-card:hover {
+      border-color: var(--primary-border);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .workflow-card.active {
+      border-color: var(--primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 2px var(--primary-ring), var(--shadow-md);
+    }
+    .workflow-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .workflow-icon-box {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .workflow-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .workflow-desc {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* AUDIT WORKSPACE CARD */
+    .workspace-card {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: 20px;
       padding: 32px;
       box-shadow: var(--shadow-lg);
-      margin-bottom: 40px;
+      margin-bottom: 32px;
     }
 
-    /* Tablist */
-    .tab-list {
+    /* Segmented Navigation Tabs */
+    .segmented-tabs {
       display: flex;
-      gap: 8px;
-      border-bottom: 2px solid var(--border-subtle);
-      padding-bottom: 4px;
-      margin-bottom: 28px;
-      overflow-x: auto;
+      gap: 6px;
+      background: var(--bg-main);
+      padding: 6px;
+      border-radius: 14px;
+      border: 1px solid var(--border-subtle);
+      margin-bottom: 24px;
+      flex-wrap: wrap;
     }
-    .tab-item {
-      background: none;
+    .segmented-tab {
+      flex: 1;
+      min-width: 140px;
+      padding: 10px 16px;
+      border-radius: 10px;
       border: none;
-      border-radius: 10px 10px 0 0;
-      padding: 12px 18px;
-      font-size: 0.95rem;
       font-weight: 700;
-      color: var(--text-muted);
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      background: transparent;
       cursor: pointer;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
-      position: relative;
-      transition: all 0.2s ease;
-      white-space: nowrap;
+      transition: all 0.18s ease;
     }
-    .tab-item:hover {
+    .segmented-tab:hover {
       color: var(--primary);
-      background: var(--primary-light);
     }
-    .tab-item[aria-selected="true"] {
-      color: var(--primary);
-      background: var(--primary-light);
-    }
-    .tab-item[aria-selected="true"]::after {
-      content: '';
-      position: absolute;
-      bottom: -6px;
-      left: 0;
-      right: 0;
-      height: 3px;
+    .segmented-tab.active {
       background: var(--primary);
-      border-radius: 3px 3px 0 0;
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(67, 56, 202, 0.25);
     }
 
-    .tab-panel {
+    .workspace-tab-content {
       display: none;
+      animation: fadeIn 0.2s ease-in-out;
     }
-    .tab-panel.active {
+    .workspace-tab-content.active {
       display: block;
-      animation: fadeIn 0.25s ease-in-out;
     }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(4px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Drag & Drop Upload Zone */
-    .upload-zone {
+    /* Drag & Drop Zone */
+    .drag-drop-zone {
       border: 2px dashed var(--border-strong);
       border-radius: 16px;
       padding: 40px 24px;
@@ -284,18 +447,14 @@
       transition: all 0.2s ease;
       position: relative;
     }
-    .upload-zone:hover, .upload-zone.dragover {
+    .drag-drop-zone:hover, .drag-drop-zone.dragover {
       border-color: var(--primary);
       background: var(--primary-light);
     }
-    .upload-zone:focus-visible {
-      outline: 3px solid var(--primary);
-      outline-offset: 3px;
-    }
-    .upload-icon {
-      width: 56px;
-      height: 56px;
-      margin: 0 auto 16px;
+    .upload-icon-box {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 14px;
       background: #ffffff;
       border: 1px solid var(--border-subtle);
       border-radius: 14px;
@@ -305,851 +464,889 @@
       color: var(--primary);
       box-shadow: var(--shadow-sm);
     }
-    .upload-title {
-      font-size: 1.15rem;
+    .upload-main-text {
+      font-size: 1.1rem;
       font-weight: 700;
       color: var(--text-main);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
-    .upload-desc {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      margin-bottom: 16px;
-    }
-    .file-input-hidden {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      opacity: 0;
-      overflow: hidden;
-      z-index: -1;
-    }
-
-    .file-selected-box {
-      display: none;
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 14px;
-      padding: 20px;
-      margin-top: 20px;
-      box-shadow: var(--shadow-sm);
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .file-info {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-    .file-info-icon {
-      width: 44px;
-      height: 44px;
-      background: var(--primary-light);
-      color: var(--primary);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 0.85rem;
-    }
-    .file-name {
-      font-weight: 700;
-      font-size: 1rem;
-      color: var(--text-main);
-      word-break: break-all;
-    }
-    .file-meta {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-
-    /* Buttons */
-    .btn {
-      font-family: inherit;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px 24px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.15s ease-in-out;
-      border: none;
-      line-height: 1.4;
-    }
-    .btn-primary {
-      background: var(--primary);
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(67, 56, 202, 0.25);
-    }
-    .btn-primary:hover {
-      background: var(--primary-hover);
-      transform: translateY(-1px);
-    }
-    .btn-secondary {
-      background: #ffffff;
-      color: var(--text-main);
-      border: 1px solid var(--border-strong);
-    }
-    .btn-secondary:hover {
-      background: #f1f5f9;
-    }
-    .btn-danger-ghost {
-      background: none;
-      color: var(--critical-text);
-      border: 1px solid transparent;
-      padding: 8px 14px;
+    .upload-sub-text {
       font-size: 0.875rem;
-    }
-    .btn-danger-ghost:hover {
-      background: var(--critical-bg);
-      border-color: var(--critical-border);
-    }
-    .btn-inspect {
-      background: var(--info-text);
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(3, 105, 161, 0.25);
-    }
-    .btn-inspect:hover {
-      background: #0284c7;
-      transform: translateY(-1px);
-    }
-    .btn-excel {
-      background: var(--success-text);
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(6, 95, 70, 0.25);
-    }
-    .btn-excel:hover {
-      background: #047857;
-      transform: translateY(-1px);
-    }
-    .btn-copy {
-      background: #ffffff;
-      color: var(--primary);
-      border: 1px solid var(--primary-ring);
-      padding: 6px 14px;
-      font-size: 0.825rem;
-      border-radius: 6px;
-      font-weight: 700;
-    }
-    .btn-copy:hover {
-      background: var(--primary-light);
+      color: var(--text-muted);
+      margin-bottom: 12px;
     }
 
-    .form-group {
+    .privacy-note {
       display: flex;
-      flex-direction: column;
-      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 0.825rem;
+      color: var(--text-muted);
+      margin-top: 14px;
     }
-    .form-label {
-      font-size: 0.95rem;
+
+    /* URL & Code Input Forms */
+    .input-label-styled {
+      font-size: 0.9rem;
       font-weight: 700;
       color: var(--text-main);
+      margin-bottom: 8px;
+      display: block;
     }
-    .form-hint {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-    input[type="url"], textarea {
+    .input-field-styled {
       width: 100%;
       background: #ffffff;
       border: 1.5px solid var(--border-strong);
       border-radius: 12px;
       padding: 14px 16px;
-      color: var(--text-main);
-      font-size: 1rem;
+      font-size: 0.975rem;
       font-family: inherit;
+      color: var(--text-main);
+      transition: border-color 0.15s ease;
     }
-    textarea {
-      min-height: 200px;
+    .input-field-styled:focus {
+      border-color: var(--primary);
+    }
+
+    .code-editor-textarea {
       font-family: 'JetBrains Mono', Consolas, monospace;
       font-size: 0.9rem;
+      min-height: 220px;
       resize: vertical;
     }
 
-    .input-row {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
-
-    .sample-box {
-      background: var(--primary-light);
-      border: 1px solid rgba(67, 56, 202, 0.2);
+    /* AUDIT CONFIGURATION ROW */
+    .config-toolbar {
+      background: var(--bg-main);
+      border: 1px solid var(--border-subtle);
       border-radius: 14px;
-      padding: 24px;
+      padding: 16px 20px;
+      margin-top: 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .config-select-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
       flex-wrap: wrap;
     }
+    .config-select {
+      background: #ffffff;
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .checkbox-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .checkbox-label input {
+      accent-color: var(--primary);
+      width: 16px;
+      height: 16px;
+    }
+    .scan-time-indicator {
+      font-size: 0.825rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--primary-border);
+    }
 
-    .loading-container {
+    /* LOADING ANIMATION STATE */
+    .loading-state-card {
       display: none;
       text-align: center;
-      padding: 36px 20px;
+      padding: 40px 24px;
       background: #ffffff;
-      border-radius: 16px;
+      border-radius: 18px;
       border: 1px solid var(--border-subtle);
       margin-top: 24px;
+      box-shadow: var(--shadow-sm);
     }
-    .spinner {
-      width: 44px;
-      height: 44px;
+    .spinner-ring {
+      width: 48px;
+      height: 48px;
       border: 4px solid var(--border-subtle);
       border-top-color: var(--primary);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
       margin: 0 auto 16px;
     }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Dashboard Results */
-    #results-area {
-      display: none;
+    /* RESULTS DASHBOARD */
+    #results-dashboard-area {
       animation: fadeIn 0.3s ease-out;
     }
 
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: 300px 1fr;
-      gap: 24px;
-      margin-bottom: 36px;
-    }
-    @media (max-width: 900px) {
-      .metrics-grid { grid-template-columns: 1fr; }
-    }
-
-    .score-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 18px;
-      padding: 32px 24px;
-      text-align: center;
-      box-shadow: var(--shadow-md);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    .score-label {
-      font-size: 0.875rem;
-      text-transform: uppercase;
-      font-weight: 800;
-      color: var(--text-muted);
-    }
-    .score-number {
-      font-size: 4.2rem;
-      font-weight: 900;
-      line-height: 1;
-      margin: 12px 0 8px;
-      letter-spacing: -2px;
-    }
-    .score-grade-badge {
-      font-size: 1rem;
-      font-weight: 800;
-      padding: 6px 16px;
-      border-radius: 9999px;
-      display: inline-block;
-      margin-bottom: 8px;
-    }
-
-    .summary-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 18px;
-      padding: 30px;
-      box-shadow: var(--shadow-md);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .stats-row {
+    /* Four Metric Cards Grid */
+    .metrics-four-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-bottom: 24px;
+      gap: 18px;
+      margin-bottom: 28px;
     }
-    @media (max-width: 600px) {
-      .stats-row { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 900px) {
+      .metrics-four-grid { grid-template-columns: repeat(2, 1fr); }
     }
-    .stat-box {
-      background: #f8fafc;
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      padding: 16px;
-      text-align: center;
-    }
-    .stat-val {
-      font-size: 2rem;
-      font-weight: 800;
-      margin-bottom: 2px;
-    }
-    .stat-label {
-      font-size: 0.775rem;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      font-weight: 800;
+    @media (max-width: 500px) {
+      .metrics-four-grid { grid-template-columns: 1fr; }
     }
 
-    .actions-bar {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    /* Filter Toolbar */
-    .filter-toolbar {
+    .metric-card {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: 16px;
-      padding: 18px 24px;
-      margin-bottom: 24px;
+      padding: 22px;
       box-shadow: var(--shadow-sm);
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
     }
-    .filter-group {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
+    .metric-val-num {
+      font-size: 2.2rem;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -1px;
     }
-    .filter-title {
-      font-size: 0.85rem;
+    .metric-label-text {
+      font-size: 0.8rem;
       font-weight: 800;
       text-transform: uppercase;
       color: var(--text-muted);
-      letter-spacing: 0.05em;
+      margin-top: 4px;
     }
-    .filter-pill {
+
+    /* Circular SVG Score Chart */
+    .score-circle-svg {
+      width: 64px;
+      height: 64px;
+      transform: rotate(-90deg);
+    }
+    .score-circle-bg {
+      fill: none;
+      stroke: var(--border-subtle);
+      stroke-width: 6;
+    }
+    .score-circle-progress {
+      fill: none;
+      stroke: var(--primary);
+      stroke-width: 6;
+      stroke-linecap: round;
+      stroke-dasharray: 176;
+      stroke-dashoffset: 40;
+      transition: stroke-dashoffset 0.8s ease-in-out;
+    }
+
+    /* DETAILED AUDIT RESULTS CARD */
+    .audit-results-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 32px;
+    }
+    .audit-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+    .audit-title-meta h3 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .audit-sub-meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Horizontal Severity Chart Bar */
+    .severity-bar-container {
+      display: flex;
+      height: 12px;
+      border-radius: 9999px;
+      overflow: hidden;
+      margin: 16px 0 24px;
+      background: var(--border-subtle);
+    }
+    .sev-bar-seg {
+      height: 100%;
+      transition: width 0.4s ease;
+    }
+
+    /* Multi-Standard Pass Pills */
+    .standards-pass-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 768px) {
+      .standards-pass-grid { grid-template-columns: 1fr; }
+    }
+    .standard-pass-box {
+      background: var(--bg-main);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+    }
+    .std-pass-val {
+      font-size: 1.3rem;
+      font-weight: 800;
+    }
+    .std-pass-lbl {
+      font-size: 0.775rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    /* FILTER & SEARCH TOOLBAR */
+    .issues-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .filter-pills-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .filter-btn-pill {
       background: #ffffff;
       border: 1.5px solid var(--border-strong);
-      border-radius: 9999px;
       padding: 6px 14px;
+      border-radius: 9999px;
       font-size: 0.85rem;
       font-weight: 700;
       color: var(--text-secondary);
       cursor: pointer;
       transition: all 0.15s ease;
     }
-    .filter-pill:hover {
-      border-color: var(--primary);
-      color: var(--primary);
-    }
-    .filter-pill.active {
+    .filter-btn-pill:hover, .filter-btn-pill.active {
       background: var(--primary);
       border-color: var(--primary);
       color: #ffffff;
     }
+    .search-input-box {
+      padding: 8px 14px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border-strong);
+      font-size: 0.875rem;
+      min-width: 240px;
+    }
 
-    /* Issues Feed & Quick Fix Boxes */
-    .issues-list {
+    /* ISSUE TABLE / LIST */
+    .issues-list-container {
       display: flex;
       flex-direction: column;
-      gap: 22px;
+      gap: 18px;
     }
-    .issue-card {
-      background: var(--bg-card);
+    .issue-card-item {
+      background: #ffffff;
       border: 1px solid var(--border-subtle);
-      border-left: 6px solid #cbd5e1;
-      border-radius: 16px;
-      padding: 24px;
+      border-left: 5px solid var(--border-strong);
+      border-radius: 14px;
+      padding: 22px;
       box-shadow: var(--shadow-sm);
+      transition: all 0.15s ease;
     }
-    .issue-card.sev-critical { border-left-color: var(--critical-text); }
-    .issue-card.sev-serious { border-left-color: var(--serious-text); }
-    .issue-card.sev-moderate { border-left-color: var(--moderate-text); }
+    .issue-card-item:hover {
+      box-shadow: var(--shadow-md);
+    }
+    .issue-card-item.sev-critical { border-left-color: var(--critical-text); }
+    .issue-card-item.sev-serious { border-left-color: var(--serious-text); }
+    .issue-card-item.sev-moderate { border-left-color: var(--warn-text); }
 
-    .issue-header-row {
+    .issue-top-bar {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 16px;
-      margin-bottom: 12px;
+      gap: 14px;
+      margin-bottom: 10px;
       flex-wrap: wrap;
     }
-    .issue-title-area {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .issue-badge-num {
-      background: var(--primary-light);
-      color: var(--primary);
-      font-weight: 800;
-      font-size: 0.85rem;
-      padding: 4px 10px;
-      border-radius: 8px;
-    }
-    .issue-title {
-      font-size: 1.15rem;
+    .issue-title-text {
+      font-size: 1.1rem;
       font-weight: 800;
       color: var(--text-main);
     }
-
-    .badge-pills {
+    .issue-badges-row {
       display: flex;
       gap: 8px;
       align-items: center;
       flex-wrap: wrap;
     }
-    .pill-principle {
-      background: var(--purple-bg);
-      color: var(--purple-text);
-      border: 1px solid var(--purple-border);
-      font-size: 0.775rem;
+    .badge-sev {
+      font-size: 0.75rem;
       font-weight: 800;
-      padding: 4px 10px;
-      border-radius: 9999px;
-      text-transform: uppercase;
-    }
-    .pill-severity {
-      font-size: 0.775rem;
-      font-weight: 800;
-      padding: 4px 10px;
-      border-radius: 9999px;
-      text-transform: uppercase;
-      border: 1px solid transparent;
-    }
-    .badge-critical { background: var(--critical-bg); color: var(--critical-text); border-color: var(--critical-border); }
-    .badge-serious { background: var(--serious-bg); color: var(--serious-text); border-color: var(--serious-border); }
-    .badge-moderate { background: var(--moderate-bg); color: var(--moderate-text); border-color: var(--moderate-border); }
-
-    .issue-meta-bar {
-      font-size: 0.875rem;
-      color: var(--text-muted);
-      margin-bottom: 12px;
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-    .wcag-sc-tag {
-      font-weight: 700;
-      color: var(--text-secondary);
-    }
-    .target-tag {
-      font-family: 'JetBrains Mono', Consolas, monospace;
-      background: #f1f5f9;
-      color: var(--primary);
-      padding: 2px 8px;
+      padding: 3px 10px;
       border-radius: 6px;
-      font-size: 0.825rem;
+      text-transform: uppercase;
     }
+    .badge-sev-critical { background: var(--critical-bg); color: var(--critical-text); border: 1px solid var(--critical-border); }
+    .badge-sev-serious { background: var(--serious-bg); color: var(--serious-text); border: 1px solid var(--serious-border); }
+    .badge-sev-moderate { background: var(--warn-bg); color: var(--warn-text); border: 1px solid var(--warn-border); }
 
-    .issue-desc {
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-      line-height: 1.6;
-      margin-bottom: 18px;
-    }
-
-    /* Dedicated Quick Fix Section */
-    .quick-fix-panel {
+    /* AI FIX ASSISTANT PANEL */
+    .ai-fix-panel {
       background: #0f172a;
-      border: 1px solid #1e293b;
-      border-radius: 12px;
-      padding: 18px;
       color: #f8fafc;
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 36px;
+      border: 1px solid #1e293b;
+      box-shadow: var(--shadow-lg);
     }
-    .quick-fix-header {
+    .ai-fix-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 12px;
     }
-    .quick-fix-title {
-      font-size: 0.85rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: #38bdf8;
+    .ai-title-group {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 10px;
     }
-    .quick-fix-code {
+    .ai-title-text {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+    .ai-badge {
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 9999px;
+    }
+    .ai-code-block {
       font-family: 'JetBrains Mono', Consolas, monospace;
       font-size: 0.875rem;
       color: #a5b4fc;
-      white-space: pre-wrap;
-      word-break: break-all;
       background: #090d16;
       border: 1px solid #1e293b;
-      padding: 12px 14px;
-      border-radius: 8px;
-      margin-bottom: 10px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      white-space: pre-wrap;
+      word-break: break-all;
+      margin-bottom: 14px;
     }
-    .quick-fix-action {
+    .ai-btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn-ai-action {
+      background: #1e293b;
+      color: #ffffff;
+      border: 1px solid #334155;
+      padding: 8px 16px;
       font-size: 0.85rem;
-      color: #94a3b8;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-ai-action:hover {
+      background: #334155;
+    }
+    .btn-ai-primary {
+      background: var(--primary);
+      border-color: var(--primary);
     }
 
+    /* FOOTER */
     footer {
       margin-top: auto;
       background: #ffffff;
       border-top: 1px solid var(--border-subtle);
-      padding: 24px;
+      padding: 24px 28px;
       text-align: center;
       font-size: 0.875rem;
       color: var(--text-muted);
+    }
+
+    /* TOAST NOTIFICATION */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .toast-item {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      animation: slideIn 0.2s ease-out;
+    }
+    @keyframes slideIn {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Skip link for keyboard accessibility (WCAG 2.4.1) -->
+  <!-- Skip Link for Keyboard Accessibility (WCAG 2.4.1) -->
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <!-- Live Announcer for screen readers -->
+  <!-- Live Announcer for Screen Readers -->
   <div id="a11y-announcer" class="sr-only" role="status" aria-live="polite"></div>
 
+  <!-- STICKY HEADER -->
   <header role="banner">
-    <div class="header-inner">
-      <a href="/" class="brand" aria-label="Patchly - Home">
-        <div class="brand-icon" aria-hidden="true">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <div class="header-container">
+      <!-- Left: Logo & Brand -->
+      <a href="/" class="brand-group" aria-label="Patchly Platform Home">
+        <div class="brand-logo-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
             <path d="m9 12 2 2 4-4"/>
           </svg>
         </div>
-        <span>Patchly</span>
+        <span class="brand-name">Patchly</span>
+        <span class="brand-tag">Accessibility Intelligence</span>
       </a>
-      <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
-        <div class="badge-wcag">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-            <circle cx="12" cy="12" r="10"></circle>
-            <path d="m9 12 2 2 4-4"></path>
-          </svg>
-          <span>WCAG 2.1 AA</span>
-        </div>
-        <div class="badge-wcag" style="background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe;">
-          <span>Section 508 (US)</span>
-        </div>
-        <div class="badge-wcag" style="background: #fdf2f8; color: #be185d; border-color: #fbcfe8;">
-          <span>EN 301 549 (EU)</span>
-        </div>
+
+      <!-- Center Nav Links -->
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="#" class="nav-link active" onclick="switchMainView('audit'); return false;">Dashboard</a></li>
+          <li><a href="#" class="nav-link" onclick="switchMainView('testruns'); return false;">Audits & Crawls</a></li>
+          <li><a href="#" class="nav-link" onclick="switchMainView('dispute'); return false;">Dispute Portal</a></li>
+          <li><a href="#" class="nav-link" onclick="downloadExcelReport(); return false;">Reports</a></li>
+          <li><a href="https://github.com/Rachana-2007/patchlywebaccessibility" target="_blank" class="nav-link">Documentation</a></li>
+        </ul>
+      </nav>
+
+      <!-- Right: Compliance Badges & Profile -->
+      <div class="header-right">
+        <span class="badge-std badge-wcag">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          WCAG 2.1 AA
+        </span>
+        <span class="badge-std badge-508">Section 508</span>
+        <span class="badge-std badge-en">EN 301 549</span>
+
+        <div class="user-profile-avatar" title="Auditor Account">PA</div>
       </div>
     </div>
   </header>
 
+  <!-- MAIN CONTENT CONTAINER -->
   <main id="main-content">
-    <!-- Main Section Switcher Bar -->
-    <div style="display: flex; gap: 12px; margin-bottom: 32px; background: #ffffff; padding: 8px; border-radius: 16px; border: 1px solid var(--border-subtle); box-shadow: var(--shadow-sm); flex-wrap: wrap;" role="tablist" aria-label="Patchly Core Views">
-      <button class="main-nav-btn active" id="nav-audit-btn" onclick="switchMainView('audit')" style="flex: 1; min-width: 220px; padding: 12px 20px; border-radius: 12px; border: none; font-weight: 800; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--primary); color: #ffffff;">
-        ⚡ Single Page Audit
-      </button>
-      <button class="main-nav-btn" id="nav-testruns-btn" onclick="switchMainView('testruns')" style="flex: 1; min-width: 220px; padding: 12px 20px; border-radius: 12px; border: none; font-weight: 800; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; background: transparent; color: var(--text-secondary);">
-        📂 Batch Test Runs & Multi-Page Crawler
-      </button>
-      <button class="main-nav-btn" id="nav-dispute-btn" onclick="switchMainView('dispute')" style="flex: 1; min-width: 220px; padding: 12px 20px; border-radius: 12px; border: none; font-weight: 800; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; background: transparent; color: var(--text-secondary);">
-        🛡️ False Positive & AI Resolution Portal
-      </button>
-    </div>
 
-    <!-- MAIN VIEW 1: Single Page Audit Scanner -->
-    <div id="main-audit-view">
-      <div class="hero">
-        <div class="hero-eyebrow">
-          <span>Empathetic Accessibility Engineering</span>
+    <!-- COMPACT HERO SECTION -->
+    <section class="hero-compact">
+      <div class="hero-eyebrow">
+        <span>✨ AI-Powered Accessibility Auditing</span>
+      </div>
+      <h1>Make every website accessible by default.</h1>
+      <p>Scan webpages, HTML files, and applications for accessibility issues across WCAG 2.1, Section 508, and EN 301 549 — then fix them with actionable remediation guidance.</p>
+      
+      <div class="hero-cta-group">
+        <button type="button" class="btn btn-primary" onclick="focusWorkspaceInput()">
+          Start an Audit &rarr;
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="runSampleScan()">
+          View Demo
+        </button>
+      </div>
+
+      <div class="hero-trust-indicator">
+        <span>⚡ Instant analysis</span>
+        <span>•</span>
+        <span>🤖 Automated AI detection</span>
+        <span>•</span>
+        <span>💻 Developer-ready fixes</span>
+      </div>
+    </section>
+
+    <!-- PRODUCT WORKFLOW CARDS (3 Modes) -->
+    <section class="product-workflow-grid" aria-label="Product Workflow Selection">
+      <div class="workflow-card active" id="wf-card-audit" onclick="switchMainView('audit')">
+        <div class="workflow-card-header">
+          <div class="workflow-icon-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <div class="workflow-title">⚡ Single Page Audit</div>
         </div>
-        <h1>Auditing Principles 1 (Perceivable), 2 (Operable) & 3 (Understandable)</h1>
-        <p>Upload HTML files, scan live URLs, or test snippets. Evaluates WCAG 2.1, Section 508 & EN 301 549 guidelines with instant quick fix remediations.</p>
+        <div class="workflow-desc">Instantly analyze one webpage, raw HTML file, or code snippet against WCAG 2.1 AA.</div>
       </div>
 
-      <!-- Scanner Input Card -->
-      <section class="scanner-card" aria-labelledby="scanner-heading">
-      <h2 id="scanner-heading" class="sr-only">Accessibility Audit Scanner Input</h2>
-
-      <!-- Tablist -->
-      <div class="tab-list" role="tablist" aria-label="Audit Input Options">
-        <button class="tab-item" role="tab" id="tab-upload-btn" aria-selected="true" aria-controls="tab-upload" tabindex="0" onclick="selectTab('upload')">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="17 8 12 3 7 8"></polyline>
-            <line x1="12" y1="3" x2="12" y2="15"></line>
-          </svg>
-          <span>Upload HTML File</span>
-        </button>
-
-        <button class="tab-item" role="tab" id="tab-sample-btn" aria-selected="false" aria-controls="tab-sample" tabindex="-1" onclick="selectTab('sample')">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-          </svg>
-          <span>Built-in Demo Page</span>
-        </button>
-
-        <button class="tab-item" role="tab" id="tab-url-btn" aria-selected="false" aria-controls="tab-url" tabindex="-1" onclick="selectTab('url')">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="2" y1="12" x2="22" y2="12"></line>
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-          </svg>
-          <span>Scan Live URL</span>
-        </button>
-
-        <button class="tab-item" role="tab" id="tab-raw-btn" aria-selected="false" aria-controls="tab-raw" tabindex="-1" onclick="selectTab('raw')">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <polyline points="16 18 22 12 16 6"></polyline>
-            <polyline points="8 6 2 12 8 18"></polyline>
-          </svg>
-          <span>Paste Code</span>
-        </button>
+      <div class="workflow-card" id="wf-card-testruns" onclick="switchMainView('testruns')">
+        <div class="workflow-card-header">
+          <div class="workflow-icon-box" style="background:#eff6ff; color:#1d4ed8;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="workflow-title">📁 Batch Testing & Crawls</div>
+        </div>
+        <div class="workflow-desc">Crawl multiple pages and track accessibility across an entire site or folder directory.</div>
       </div>
 
-      <!-- Tab 1: Upload HTML File -->
-      <div id="tab-upload" class="tab-panel active" role="tabpanel" aria-labelledby="tab-upload-btn">
-        <div class="upload-zone" id="drop-zone" tabindex="0" role="button" aria-label="Drop your HTML file here or press Enter to browse" onclick="triggerFileInput()" onkeydown="handleDropzoneKey(event)">
-          <input type="file" id="file-input" class="file-input-hidden" accept=".html,.htm" onchange="handleFileSelected(event)" aria-hidden="true">
-          <div class="upload-icon" aria-hidden="true">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-              <polyline points="14 2 14 8 20 8"></polyline>
-              <line x1="12" y1="18" x2="12" y2="12"></line>
-              <polyline points="9 15 12 12 15 15"></polyline>
+      <div class="workflow-card" id="wf-card-dispute" onclick="switchMainView('dispute')">
+        <div class="workflow-card-header">
+          <div class="workflow-icon-box" style="background:#fdf2f8; color:#be185d;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="workflow-title">🛡️ AI Resolution Portal</div>
+        </div>
+        <div class="workflow-desc">Review false positives and generate intelligent AI remediation suggestions for developers.</div>
+      </div>
+    </section>
+
+    <!-- MAIN VIEW 1: SINGLE PAGE AUDIT WORKSPACE -->
+    <div id="main-audit-view">
+      <!-- Large Rounded Workspace Card -->
+      <section class="workspace-card" aria-labelledby="workspace-heading">
+        <h2 id="workspace-heading" class="sr-only">Accessibility Audit Input Workspace</h2>
+
+        <!-- Segmented Navigation Tabs -->
+        <div class="segmented-tabs" role="tablist" aria-label="Input Options">
+          <button class="segmented-tab active" role="tab" id="tab-upload-btn" aria-selected="true" aria-controls="tab-upload" onclick="selectWorkspaceTab('upload')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <span>Upload HTML</span>
+          </button>
+
+          <button class="segmented-tab" role="tab" id="tab-url-btn" aria-selected="false" aria-controls="tab-url" onclick="selectWorkspaceTab('url')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <span>Scan URL</span>
+          </button>
+
+          <button class="segmented-tab" role="tab" id="tab-raw-btn" aria-selected="false" aria-controls="tab-raw" onclick="selectWorkspaceTab('raw')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            <span>Paste Code</span>
+          </button>
+
+          <button class="segmented-tab" role="tab" id="tab-sample-btn" aria-selected="false" aria-controls="tab-sample" onclick="selectWorkspaceTab('sample')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <span>Demo Page</span>
+          </button>
+        </div>
+
+        <!-- TAB CONTENT 1: UPLOAD HTML -->
+        <div class="workspace-tab-content active" id="tab-upload" role="tabpanel">
+          <div class="drag-drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleFileDrop(event)">
+            <input type="file" id="file-input" accept=".html,.htm" style="display:none;" onchange="handleFileSelect(event)">
+            <div class="upload-icon-box">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
+            <div class="upload-main-text">Drop your HTML file here</div>
+            <div class="upload-sub-text">or <span style="color:var(--primary); font-weight:700; text-decoration:underline;">browse files</span> from your computer</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Supports .html, .htm • Maximum file size 10MB</div>
+          </div>
+          
+          <div id="file-selected-info" style="display:none; margin-top:16px; background:var(--primary-light); border:1px solid var(--primary-border); padding:16px; border-radius:12px; align-items:center; justify-content:space-between;">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <strong id="file-name-display" style="color:var(--primary); font-size:0.95rem;">filename.html</strong>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="uploadAndAuditFile()">Run Audit on File &rarr;</button>
+          </div>
+
+          <div class="privacy-note">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span>Your file is analyzed securely and is not publicly shared.</span>
+          </div>
+        </div>
+
+        <!-- TAB CONTENT 2: SCAN URL -->
+        <div class="workspace-tab-content" id="tab-url" role="tabpanel">
+          <div style="max-width: 760px; margin: 0 auto;">
+            <label for="target-url" class="input-label-styled">Target Webpage URL</label>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+              <input type="url" id="target-url" class="input-field-styled" placeholder="https://example.com" style="flex:1; min-width:260px;" value="https://example.com">
+              <button type="button" class="btn btn-primary" onclick="runUrlScan()" style="white-space:nowrap;">Scan Website &rarr;</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB CONTENT 3: PASTE CODE -->
+        <div class="workspace-tab-content" id="tab-raw" role="tabpanel">
+          <label for="raw-html" class="input-label-styled">Paste HTML Source Code</label>
+          <textarea id="raw-html" class="input-field-styled code-editor-textarea" placeholder="<!DOCTYPE html>&#10;<html lang=&quot;en&quot;>&#10;<head><title>My App</title></head>&#10;<body>...</body>&#10;</html>"></textarea>
+          <div style="margin-top: 14px; text-align: right;">
+            <button type="button" class="btn btn-primary" onclick="runRawHtmlScan()">Analyze Code &rarr;</button>
+          </div>
+        </div>
+
+        <!-- TAB CONTENT 4: DEMO PAGE -->
+        <div class="workspace-tab-content" id="tab-sample" role="tabpanel">
+          <div style="text-align: center; padding: 20px;">
+            <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 8px;">Try Patchly with our accessibility demo</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 18px;">Audit a pre-configured sample webpage containing a mix of WCAG A/AA barriers and accessible components.</p>
+            <button type="button" class="btn btn-primary" onclick="runSampleScan()">Run Demo Audit &rarr;</button>
+          </div>
+        </div>
+
+        <!-- COMPACT AUDIT TYPE SELECTOR & CONFIG TOOLBAR -->
+        <div class="config-toolbar">
+          <div class="config-select-group">
+            <div>
+              <span style="font-size:0.775rem; font-weight:800; text-transform:uppercase; color:var(--text-muted); display:block; margin-bottom:2px;">Standard</span>
+              <select class="config-select">
+                <option value="wcag21">WCAG 2.1 AA (Recommended)</option>
+                <option value="sec508">US Section 508 (§ 1194.22)</option>
+                <option value="en301">EU EN 301 549 (Clause 9)</option>
+              </select>
+            </div>
+
+            <div>
+              <span style="font-size:0.775rem; font-weight:800; text-transform:uppercase; color:var(--text-muted); display:block; margin-bottom:2px;">Scope</span>
+              <select class="config-select">
+                <option value="single">Single Page Audit</option>
+                <option value="multi">Multi-Page Split Crawl</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="checkbox-group">
+            <label class="checkbox-label"><input type="checkbox" checked disabled> Automated checks</label>
+            <label class="checkbox-label"><input type="checkbox" checked disabled> Color contrast</label>
+            <label class="checkbox-label"><input type="checkbox" checked disabled> Keyboard navigation</label>
+            <label class="checkbox-label"><input type="checkbox" checked disabled> ARIA & semantics</label>
+          </div>
+
+          <div class="scan-time-indicator">⚡ Estimated scan time: &lt; 30 seconds</div>
+        </div>
+
+        <!-- LOADING STATE ANIMATION -->
+        <div class="loading-state-card" id="loading-spinner">
+          <div class="spinner-ring"></div>
+          <h4 style="font-size: 1.15rem; font-weight: 800;" id="loading-msg">Auditing accessibility barriers...</h4>
+          <div style="font-size: 0.875rem; color: var(--text-muted); margin-top: 4px;">Evaluating Principles 1 (Perceivable), 2 (Operable), and 3 (Understandable)...</div>
+        </div>
+      </section>
+
+      <!-- RESULTS PREVIEW DASHBOARD AREA -->
+      <section id="results-dashboard-area">
+        <!-- Four Metric Cards -->
+        <div class="metrics-four-grid">
+          <!-- Card 1: Score & Circle SVG -->
+          <div class="metric-card">
+            <div>
+              <div class="metric-val-num" id="score-val" style="color: var(--primary);">78</div>
+              <div class="metric-label-text">Accessibility Score</div>
+              <div style="font-size: 0.8rem; font-weight: 700; color: var(--pass-text);" id="score-grade-badge">Grade: B</div>
+            </div>
+            <svg class="score-circle-svg" viewBox="0 0 64 64">
+              <circle class="score-circle-bg" cx="32" cy="32" r="28" />
+              <circle class="score-circle-progress" id="score-circle-stroke" cx="32" cy="32" r="28" />
             </svg>
           </div>
-          <div class="upload-title">Choose an HTML file or drag & drop here</div>
-          <div class="upload-desc">Supports standard .html and .htm files. No code pasting required.</div>
-          <button type="button" class="btn btn-secondary" onclick="triggerFileInput(); event.stopPropagation();">
-            Browse Computer
-          </button>
-        </div>
 
-        <div class="file-selected-box" id="file-selected-box">
-          <div class="file-info">
-            <div class="file-info-icon" aria-hidden="true">HTML</div>
+          <!-- Card 2: Critical Issues -->
+          <div class="metric-card">
             <div>
-              <div class="file-name" id="selected-file-name">filename.html</div>
-              <div class="file-meta" id="selected-file-size">0 KB &bull; Ready for scan</div>
+              <div class="metric-val-num" id="count-critical" style="color: var(--critical-text);">4</div>
+              <div class="metric-label-text">Critical Issues</div>
+              <div style="font-size: 0.775rem; color: var(--text-muted);">High Remediation Priority</div>
             </div>
+            <div style="width: 44px; height: 44px; background: var(--critical-bg); color: var(--critical-text); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800;">✕</div>
           </div>
-          <div class="file-actions">
-            <button type="button" class="btn btn-danger-ghost" onclick="clearSelectedFile()">
-              Remove
-            </button>
-            <button type="button" class="btn btn-primary" id="btn-scan-file" onclick="runUploadedFileScan()">
-              Audit Uploaded File
-            </button>
-          </div>
-        </div>
-      </div>
 
-      <!-- Tab 2: Built-in Sample Page -->
-      <div id="tab-sample" class="tab-panel" role="tabpanel" aria-labelledby="tab-sample-btn">
-        <div class="sample-box">
-          <div>
-            <div class="sample-title">ApexFlow SaaS Demo Page</div>
-            <div class="sample-text">Fixture loaded with deliberate WCAG Principles 1, 2, and 3 violations (low contrast, missing labels, uncaptioned video, broken focus rings).</div>
+          <!-- Card 3: Warnings / Serious -->
+          <div class="metric-card">
+            <div>
+              <div class="metric-val-num" id="count-serious" style="color: var(--warn-text);">12</div>
+              <div class="metric-label-text">Warnings & Serious</div>
+              <div style="font-size: 0.775rem; color: var(--text-muted);">Moderate Barriers</div>
+            </div>
+            <div style="width: 44px; height: 44px; background: var(--warn-bg); color: var(--warn-text); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800;">!</div>
           </div>
-          <button type="button" class="btn btn-primary" onclick="runSampleScan()">
-            Audit ApexFlow Demo
-          </button>
-        </div>
-      </div>
 
-      <!-- Tab 3: URL Scanner -->
-      <div id="tab-url" class="tab-panel" role="tabpanel" aria-labelledby="tab-url-btn">
-        <div class="form-group">
-          <label for="target-url" class="form-label">Target Website URL</label>
-          <div class="input-row">
-            <input type="url" id="target-url" placeholder="https://example.com" value="https://example.com" aria-describedby="url-hint">
-            <button type="button" class="btn btn-primary" onclick="runUrlScan()">
-              Scan URL
-            </button>
-          </div>
-          <div id="url-hint" class="form-hint">Enter an accessible public HTTP or HTTPS web address to audit.</div>
-        </div>
-      </div>
-
-      <!-- Tab 4: Raw HTML Paste -->
-      <div id="tab-raw" class="tab-panel" role="tabpanel" aria-labelledby="tab-raw-btn">
-        <div class="form-group">
-          <label for="raw-html" class="form-label">HTML Markup</label>
-          <textarea id="raw-html" placeholder="<!DOCTYPE html><html><body>...</body></html>" aria-describedby="raw-hint"></textarea>
-          <div id="raw-hint" class="form-hint">Paste full HTML document structure or component fragments.</div>
-          <div style="margin-top: 14px; display: flex; justify-content: flex-end;">
-            <button type="button" class="btn btn-primary" onclick="runRawHtmlScan()">
-              Audit Pasted HTML
-            </button>
+          <!-- Card 4: Passed Checks -->
+          <div class="metric-card">
+            <div>
+              <div class="metric-val-num" id="count-passed" style="color: var(--pass-text);">86</div>
+              <div class="metric-label-text">Passed Checks</div>
+              <div style="font-size: 0.775rem; color: var(--text-muted);">Verified Compliant</div>
+            </div>
+            <div style="width: 44px; height: 44px; background: var(--pass-bg); color: var(--pass-text); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800;">✓</div>
           </div>
         </div>
-      </div>
 
-      <!-- Loading State -->
-      <div class="loading-container" id="loading-spinner" aria-live="assertive">
-        <div class="spinner" aria-hidden="true"></div>
-        <div class="loading-text" id="loading-message">Analyzing Document Accessibility...</div>
-        <div class="loading-subtext">Evaluating Principles 1 (Perceivable), 2 (Operable), and 3 (Understandable)...</div>
-      </div>
-    </section>
-
-    <!-- Scan Results Dashboard -->
-    <section id="results-area" aria-labelledby="results-heading">
-      <h2 id="results-heading" class="sr-only">Accessibility Assessment Results</h2>
-
-      <div class="metrics-grid">
-        <div class="score-card">
-          <div class="score-label">Accessibility Health Score</div>
-          <div class="score-number" id="score-val" aria-label="Health score: 0 out of 100">--</div>
-          <div class="score-grade-badge" id="score-grade-badge">Grade: --</div>
-          <div class="score-status-desc" id="score-status-desc">Calculating status...</div>
-        </div>
-
-        <div class="summary-card">
-          <div>
-            <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px;">Barrier Summary</h3>
-            <div class="stats-row">
-              <div class="stat-box">
-                <div class="stat-val" id="count-total" style="color: var(--text-main);">0</div>
-                <div class="stat-label">Total Flags</div>
-              </div>
-              <div class="stat-box">
-                <div class="stat-val" id="count-critical" style="color: var(--critical-text);">0</div>
-                <div class="stat-label">Critical</div>
-              </div>
-              <div class="stat-box">
-                <div class="stat-val" id="count-serious" style="color: var(--serious-text);">0</div>
-                <div class="stat-label">Serious</div>
-              </div>
-              <div class="stat-box">
-                <div class="stat-val" id="count-moderate" style="color: var(--moderate-text);">0</div>
-                <div class="stat-label">Moderate</div>
-              </div>
+        <!-- DETAILED AUDIT RESULTS CARD -->
+        <div class="audit-results-card">
+          <div class="audit-header-row">
+            <div class="audit-title-meta">
+              <h3>Accessibility Overview</h3>
+              <div class="audit-sub-meta" id="audit-meta-title">example.com • Scanned just now</div>
+            </div>
+            
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button type="button" class="btn btn-secondary" id="btn-inspect" onclick="openInspectorWindow()">
+                👁 Launch Visual Overlay Inspector
+              </button>
+              <button type="button" class="btn btn-primary" onclick="downloadExcelReport()">
+                📥 Export Assessment (.xlsx)
+              </button>
             </div>
           </div>
 
-          <div class="actions-bar">
-            <button type="button" class="btn btn-inspect" id="btn-inspect" onclick="openInspectorWindow()">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-              <span>Launch Visual Overlay Viewer</span>
-            </button>
-            <button type="button" class="btn btn-excel" onclick="downloadExcelReport()">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" y1="15" x2="12" y2="3"></line>
-              </svg>
-              <span>Export Assessment (.xlsx)</span>
-            </button>
+          <!-- Horizontal Severity Chart Bar -->
+          <div style="font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted);">Barrier Severity Distribution</div>
+          <div class="severity-bar-container">
+            <div class="sev-bar-seg" id="sev-bar-crit" style="width: 25%; background: var(--critical-text);" title="Critical"></div>
+            <div class="sev-bar-seg" id="sev-bar-ser" style="width: 35%; background: var(--serious-text);" title="Serious"></div>
+            <div class="sev-bar-seg" id="sev-bar-mod" style="width: 40%; background: var(--warn-text);" title="Moderate"></div>
+          </div>
+
+          <!-- Multi-Standard Pass Rates Grid -->
+          <div class="standards-pass-grid">
+            <div class="standard-pass-box">
+              <div class="std-pass-val" id="wcag-rate-val" style="color: var(--primary);">88%</div>
+              <div class="std-pass-lbl">WCAG 2.1 AA Compliance Rate</div>
+            </div>
+
+            <div class="standard-pass-box">
+              <div class="std-pass-val" id="sec508-rate-val" style="color: var(--info-text);">92%</div>
+              <div class="std-pass-lbl">US Section 508 (§ 1194.22)</div>
+            </div>
+
+            <div class="standard-pass-box">
+              <div class="std-pass-val" id="en301-rate-val" style="color: #be185d;">86%</div>
+              <div class="std-pass-lbl">EU EN 301 549 (Clause 9)</div>
+            </div>
+          </div>
+
+          <!-- FILTER & SEARCH TOOLBAR -->
+          <div class="issues-toolbar">
+            <div class="filter-pills-group">
+              <button type="button" class="filter-btn-pill active" onclick="filterSeverity('ALL', this)">All Issues</button>
+              <button type="button" class="filter-btn-pill" onclick="filterSeverity('CRITICAL', this)">Critical</button>
+              <button type="button" class="filter-btn-pill" onclick="filterSeverity('SERIOUS', this)">Serious</button>
+              <button type="button" class="filter-btn-pill" onclick="filterSeverity('MODERATE', this)">Moderate</button>
+            </div>
+
+            <input type="text" class="search-input-box" id="issue-search-input" placeholder="Search accessibility issues..." onkeyup="filterIssuesSearch(this.value)">
+          </div>
+
+          <!-- ISSUES CARD LIST -->
+          <div class="issues-list-container" id="issues-list-container">
+            <!-- Rendered dynamically -->
           </div>
         </div>
-      </div>
 
-      <!-- Multi-Standard Compliance Status Grid (WCAG, Section 508, EN 301 549) -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 28px;">
-        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 14px; padding: 18px 20px; box-shadow: var(--shadow-sm);">
-          <div style="font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px;">WCAG 2.1 AA Standard</div>
-          <div style="font-size: 1.25rem; font-weight: 800; color: var(--text-main);" id="wcag-compliance-rate">--% Pass Rate</div>
-          <div style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px;" id="wcag-compliance-status">W3C Recommendation Guidelines</div>
+        <!-- PREMIUM AI FIX ASSISTANT PANEL -->
+        <div class="ai-fix-panel">
+          <div class="ai-fix-header">
+            <div class="ai-title-group">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <span class="ai-title-text">AI Fix Assistant</span>
+              <span class="ai-badge">✨ AI Generated</span>
+            </div>
+            <span style="font-size: 0.85rem; color: #94a3b8;">Developer-ready remediation suggestions for every accessibility issue</span>
+          </div>
+
+          <div style="font-size: 0.9rem; color: #e2e8f0; margin-bottom: 10px;" id="ai-active-issue-title">
+            <strong>Target Issue:</strong> Image missing alternative text (WCAG 1.1.1)
+          </div>
+
+          <div class="ai-code-block" id="ai-code-preview"><code>&lt;!-- Developer Fix: Add descriptive alt attribute --&gt;&#10;&lt;img src=&quot;hero.jpg&quot; alt=&quot;Students collaborating in a classroom&quot;&gt;</code></div>
+
+          <div class="ai-btn-group">
+            <button type="button" class="btn-ai-action btn-ai-primary" onclick="copyAiFixCode()">📋 Copy Fix</button>
+            <button type="button" class="btn-ai-action" onclick="showToast('Fix applied to local session workspace!')">⚡ Apply Fix</button>
+            <button type="button" class="btn-ai-action" onclick="showToast('AI Explanation: WCAG 1.1.1 requires non-text content to have alternative text for screen readers.')">💡 Explain Issue</button>
+          </div>
         </div>
-
-        <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 14px; padding: 18px 20px; box-shadow: var(--shadow-sm);">
-          <div style="font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: #0369a1; margin-bottom: 4px;">US Section 508 (36 CFR 1194)</div>
-          <div style="font-size: 1.25rem; font-weight: 800; color: #0c4a6e;" id="sec508-compliance-rate">--% Pass Rate</div>
-          <div style="font-size: 0.82rem; color: #0369a1; margin-top: 4px;" id="sec508-compliance-status">Federal ICT Standards Compliance</div>
-        </div>
-
-        <div style="background: #fdf2f8; border: 1px solid #fbcfe8; border-radius: 14px; padding: 18px 20px; box-shadow: var(--shadow-sm);">
-          <div style="font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: #be185d; margin-bottom: 4px;">EU EN 301 549 (V3.2.1)</div>
-          <div style="font-size: 1.25rem; font-weight: 800; color: #831843;" id="en301-compliance-rate">--% Pass Rate</div>
-          <div style="font-size: 0.82rem; color: #be185d; margin-top: 4px;" id="en301-compliance-status">European Standard Clause 9 ICT</div>
-        </div>
-      </div>
-
-      <!-- Filter Toolbar -->
-      <div class="filter-toolbar">
-        <div class="filter-group">
-          <span class="filter-title">Filter by Principle:</span>
-          <button type="button" class="filter-pill active" onclick="filterPrinciple('ALL', this)">All Principles</button>
-          <button type="button" class="filter-pill" onclick="filterPrinciple('Perceivable', this)">1. Perceivable</button>
-          <button type="button" class="filter-pill" onclick="filterPrinciple('Operable', this)">2. Operable</button>
-          <button type="button" class="filter-pill" onclick="filterPrinciple('Understandable', this)">3. Understandable</button>
-        </div>
-
-        <div class="filter-group">
-          <span class="filter-title">Severity:</span>
-          <button type="button" class="filter-pill active" onclick="filterSeverity('ALL', this)">All Severities</button>
-          <button type="button" class="filter-pill" onclick="filterSeverity('CRITICAL', this)">Critical</button>
-          <button type="button" class="filter-pill" onclick="filterSeverity('SERIOUS', this)">Serious</button>
-          <button type="button" class="filter-pill" onclick="filterSeverity('MODERATE', this)">Moderate</button>
-        </div>
-      </div>
-
-      <!-- Issues List -->
-      <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 20px;">Detected Barriers & Quick Fix Remediation</h3>
-      <div class="issues-list" id="issues-container">
-        <!-- Dynamically rendered items -->
-      </div>
-    </section>
+      </section>
     </div> <!-- End main-audit-view -->
 
-    <!-- MAIN VIEW 2: Batch Test Runs & Multi-Page Crawler -->
+    <!-- MAIN VIEW 2: BATCH TEST RUNS & MULTI-PAGE CRAWLER -->
     <div id="main-testruns-view" style="display: none;">
-      <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 32px; box-shadow: var(--shadow-lg);">
-        <h2 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; color: var(--text-main);">📂 Batch Test Runs & Multi-Page Crawler</h2>
+      <section class="workspace-card">
+        <h2 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 8px;">📂 Batch Test Runs & Multi-Page Crawler</h2>
         <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px;">Audit live URLs containing multiple internal pages (automatically discovers, splits, and assesses every internal URL), or specify local directory folders containing HTML files as comprehensive Test Runs.</p>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-bottom: 32px;">
           <!-- Multi-Page Live URL Crawl Form -->
           <div style="background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: 16px; padding: 24px;">
-            <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 12px; color: var(--text-main);">🌐 Split & Audit Multi-Page Live URL</h3>
+            <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 12px;">🌐 Split & Audit Multi-Page Live URL</h3>
             <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 16px;">Discovers all internal sub-page links from the entry URL, splits them into separate assessments, and generates a unified Test Run report.</p>
-            <div class="form-group" style="margin-bottom: 14px;">
-              <label for="crawl-url-input" class="form-label">Entry Webpage URL</label>
-              <input type="url" id="crawl-url-input" placeholder="https://example.com" value="https://example.com">
+            <div style="margin-bottom: 14px;">
+              <label for="crawl-url-input" class="input-label-styled">Entry Webpage URL</label>
+              <input type="url" id="crawl-url-input" class="input-field-styled" placeholder="https://example.com" value="https://example.com">
             </div>
-            <div class="form-group" style="margin-bottom: 18px;">
-              <label for="crawl-max-pages" class="form-label">Max Sub-Pages to Split</label>
-              <select id="crawl-max-pages" style="width: 100%; padding: 12px 14px; border-radius: 12px; border: 1.5px solid var(--border-strong); font-size: 0.95rem;">
+            <div style="margin-bottom: 18px;">
+              <label for="crawl-max-pages" class="input-label-styled">Max Sub-Pages to Split</label>
+              <select id="crawl-max-pages" class="input-field-styled">
                 <option value="5">Up to 5 Pages</option>
                 <option value="8" selected>Up to 8 Pages (Recommended)</option>
                 <option value="15">Up to 15 Pages</option>
               </select>
             </div>
-            <button type="button" class="btn btn-primary" onclick="runCrawlTestRun()" style="width: 100%; font-weight: 800;">🚀 Launch Multi-Page Test Run</button>
+            <button type="button" class="btn btn-primary" onclick="runCrawlTestRun()" style="width: 100%;">🚀 Launch Multi-Page Test Run</button>
           </div>
 
           <!-- Folder Directory Batch Audit Form -->
           <div style="background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: 16px; padding: 24px;">
-            <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 12px; color: var(--text-main);">📁 Audit Local HTML Folder Batch</h3>
+            <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 12px;">📁 Audit Local HTML Folder Batch</h3>
             <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 16px;">Scans all `.html` files inside a local directory path as a batch Test Run with individual sub-page scorecards.</p>
-            <div class="form-group" style="margin-bottom: 24px;">
-              <label for="folder-path-input" class="form-label">Local Folder Directory Path</label>
-              <input type="text" id="folder-path-input" placeholder="e.g. r:\patchly or ./templates" value="r:\patchly">
+            <div style="margin-bottom: 24px;">
+              <label for="folder-path-input" class="input-label-styled">Local Folder Directory Path</label>
+              <input type="text" id="folder-path-input" class="input-field-styled" placeholder="e.g. r:\patchly or ./templates" value="r:\patchly">
             </div>
-            <button type="button" class="btn btn-primary" onclick="runFolderTestRun()" style="width: 100%; font-weight: 800;">📁 Launch Folder Test Run</button>
+            <button type="button" class="btn btn-primary" onclick="runFolderTestRun()" style="width: 100%;">📁 Launch Folder Test Run</button>
           </div>
         </div>
 
-        <!-- Active Test Runs Feed -->
-        <h3 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 16px; color: var(--text-main);">Active Test Run History & Split Assessments</h3>
+        <h3 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 16px;">Active Test Run History & Split Assessments</h3>
         <div id="test-runs-feed-container">
           <div style="text-align: center; padding: 30px; color: var(--text-muted);">
             No Test Runs executed yet. Launch a Multi-Page URL crawl or Folder audit above.
           </div>
         </div>
-      </div>
+      </section>
     </div> <!-- End main-testruns-view -->
 
-    <!-- MAIN VIEW 3: Standalone Human Auditor False Positive & AI Resolution Portal -->
+    <!-- MAIN VIEW 3: STANDALONE FALSE POSITIVE & AI RESOLUTION PORTAL -->
     <div id="main-dispute-view" style="display: none;">
-      <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 36px; box-shadow: var(--shadow-lg);">
+      <section class="workspace-card">
         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
           <div>
             <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 12px;">
@@ -1159,7 +1356,7 @@
               Dedicated auditor portal for reviewing, logging, and resolving disputed flags upon manual human inspection. The Patchly AI Auditor processes auditor explanations against WCAG 2.1, Section 508, and EN 301 549 criteria, automatically reclassifies verified false positives, and excludes penalties from compliance scores.
             </p>
           </div>
-          <button type="button" class="btn btn-secondary" onclick="loadFalsePositiveTickets()" style="font-weight: 700; padding: 10px 18px;">
+          <button type="button" class="btn btn-secondary" onclick="loadFalsePositiveTickets()">
             🔄 Refresh Tickets
           </button>
         </div>
@@ -1169,21 +1366,20 @@
             No false positive disputes logged yet. Click "Log False Positive" on any audit barrier flag to submit a dispute ticket.
           </div>
         </div>
-      </div>
+      </section>
     </div> <!-- End main-dispute-view -->
+
   </main>
 
-  <!-- False Positive Modal -->
-  <div id="disputeModal" role="dialog" aria-modal="true" aria-labelledby="modal-title" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(4px); z-index: 999; align-items: center; justify-content: center; padding: 20px;">
+  <!-- FALSE POSITIVE DISPUTE MODAL -->
+  <div id="disputeModal" role="dialog" aria-modal="true" aria-labelledby="modal-title" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
     <div style="background: #ffffff; border-radius: 20px; max-width: 640px; width: 100%; padding: 32px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); border: 1px solid var(--border-subtle);">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-        <h3 id="modal-title" style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 10px;">
-          <span>🛡️ Log False Positive Dispute</span>
-        </h3>
-        <button type="button" onclick="closeDisputeModal()" aria-label="Close modal" style="background: none; border: none; font-size: 1.6rem; cursor: pointer; color: var(--text-muted); line-height: 1;">&times;</button>
+        <h3 id="modal-title" style="font-size: 1.35rem; font-weight: 800; color: var(--text-main);">🛡️ Log False Positive Dispute</h3>
+        <button type="button" onclick="closeDisputeModal()" aria-label="Close modal" style="background: none; border: none; font-size: 1.6rem; cursor: pointer; color: var(--text-muted);">&times;</button>
       </div>
       <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 20px;">
-        Provide detailed explanation from your manual human inspection. The Patchly AI Auditor will analyze your technical context, verify against WCAG 2.1, Section 508, and EN 301 549 rules, and auto-resolve the barrier.
+        Provide detailed technical explanation from your manual human inspection. The Patchly AI Auditor will analyze your rationale against WCAG 2.1, Section 508, and EN 301 549 rules, and auto-resolve the barrier.
       </p>
 
       <form id="disputeForm" onsubmit="submitFalsePositiveDispute(event)">
@@ -1195,403 +1391,350 @@
         <input type="hidden" id="dispute-en301">
 
         <div style="margin-bottom: 16px;">
-          <label for="dispute-auditor-name" style="display: block; font-size: 0.825rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;">Auditor / Reviewer Name</label>
-          <input type="text" id="dispute-auditor-name" placeholder="e.g. Lead QA / Accessibility Tester" value="Human Auditor" required style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1.5px solid var(--border-strong); font-size: 0.95rem;">
+          <label for="dispute-auditor-name" class="input-label-styled">Auditor / Reviewer Name</label>
+          <input type="text" id="dispute-auditor-name" class="input-field-styled" value="Human Auditor" required>
         </div>
 
         <div style="margin-bottom: 22px;">
-          <label for="dispute-explanation" style="display: block; font-size: 0.825rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;">Technical Explanation Rationale</label>
-          <textarea id="dispute-explanation" rows="4" placeholder="Explain why this issue is a false positive (e.g. 'Contrast is provided by dynamic SVG background', 'ARIA role is set dynamically by JavaScript', or 'Decorative icon with parent label')..." required style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1.5px solid var(--border-strong); font-size: 0.95rem; font-family: inherit; resize: vertical;"></textarea>
+          <label for="dispute-explanation" class="input-label-styled">Technical Explanation Rationale</label>
+          <textarea id="dispute-explanation" class="input-field-styled" rows="4" placeholder="Explain why this issue is a false positive (e.g. 'Contrast is provided by dynamic SVG background', 'ARIA role is set dynamically by JavaScript', or 'Decorative icon with parent label')..." required></textarea>
         </div>
 
         <div style="display: flex; justify-content: flex-end; gap: 12px;">
           <button type="button" class="btn btn-secondary" onclick="closeDisputeModal()">Cancel</button>
-          <button type="submit" class="btn btn-primary" style="font-weight: 800;">Submit to AI Auditor</button>
+          <button type="submit" class="btn btn-primary">Submit to AI Auditor</button>
         </div>
       </form>
     </div>
   </div>
 
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- FOOTER -->
   <footer>
-    <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
-      <div>Patchly Accessibility Engine &bull; Evaluates WCAG 2.1 Principles 1, 2 & 3</div>
-      <div>WCAG 2.1 AA Auditor Service</div>
+    <div style="max-width: 1380px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+      <div><strong>Patchly Platform</strong> &bull; Enterprise Web Accessibility Intelligence</div>
+      <div>WCAG 2.1 AA • Section 508 • EN 301 549 Verified Engine</div>
     </div>
   </footer>
 
+  <!-- PLATFORM JAVASCRIPT -->
   <script>
     let currentIssues = [];
     let currentAuditId = null;
     let selectedHtmlFile = null;
-    let selectedFileContent = null;
-    let activePrincipleFilter = 'ALL';
     let activeSeverityFilter = 'ALL';
+    let searchQuery = '';
 
-    function announce(message) {
+    function showToast(msg) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = 'toast-item';
+      toast.textContent = msg;
+      container.appendChild(toast);
+      setTimeout(() => { toast.remove(); }, 3500);
+    }
+
+    function announce(msg) {
       const announcer = document.getElementById('a11y-announcer');
-      if (announcer) announcer.textContent = message;
+      if (announcer) announcer.textContent = msg;
     }
 
-    const tabButtons = [
-      document.getElementById('tab-upload-btn'),
-      document.getElementById('tab-sample-btn'),
-      document.getElementById('tab-url-btn'),
-      document.getElementById('tab-raw-btn')
-    ];
+    function switchMainView(view) {
+      document.getElementById('main-audit-view').style.display = view === 'audit' ? 'block' : 'none';
+      document.getElementById('main-testruns-view').style.display = view === 'testruns' ? 'block' : 'none';
+      document.getElementById('main-dispute-view').style.display = view === 'dispute' ? 'block' : 'none';
 
-    function selectTab(tabKey) {
-      const tabs = ['upload', 'sample', 'url', 'raw'];
-      tabs.forEach(t => {
-        const btn = document.getElementById(`tab-${t}-btn`);
-        const panel = document.getElementById(`tab-${t}`);
-        const isSelected = (t === tabKey);
-        btn.setAttribute('aria-selected', isSelected ? 'true' : 'false');
-        btn.tabIndex = isSelected ? 0 : -1;
-        if (isSelected) {
-          panel.classList.add('active');
-          btn.focus();
-        } else {
-          panel.classList.remove('active');
-        }
+      document.querySelectorAll('.workflow-card').forEach(c => c.classList.remove('active'));
+      const activeWf = document.getElementById(`wf-card-${view}`);
+      if (activeWf) activeWf.classList.add('active');
+
+      if (view === 'testruns') loadTestRunsFeed();
+      if (view === 'dispute') loadFalsePositiveTickets();
+    }
+
+    function selectWorkspaceTab(tab) {
+      document.querySelectorAll('.segmented-tab').forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
       });
-      announce(`Selected ${tabKey} tab.`);
-    }
+      document.querySelectorAll('.workspace-tab-content').forEach(c => c.classList.remove('active'));
 
-    tabButtons.forEach((btn, index) => {
-      btn.addEventListener('keydown', (e) => {
-        let newIndex = null;
-        if (e.key === 'ArrowRight') newIndex = (index + 1) % tabButtons.length;
-        else if (e.key === 'ArrowLeft') newIndex = (index - 1 + tabButtons.length) % tabButtons.length;
-        else if (e.key === 'Home') newIndex = 0;
-        else if (e.key === 'End') newIndex = tabButtons.length - 1;
-
-        if (newIndex !== null) {
-          e.preventDefault();
-          selectTab(['upload', 'sample', 'url', 'raw'][newIndex]);
-        }
-      });
-    });
-
-    const dropZone = document.getElementById('drop-zone');
-    const fileInput = document.getElementById('file-input');
-
-    function triggerFileInput() { fileInput.click(); }
-    function handleDropzoneKey(e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); triggerFileInput(); }
-    }
-
-    ['dragenter', 'dragover'].forEach(evt => dropZone.addEventListener(evt, e => { e.preventDefault(); dropZone.classList.add('dragover'); }));
-    ['dragleave', 'drop'].forEach(evt => dropZone.addEventListener(evt, e => { e.preventDefault(); dropZone.classList.remove('dragover'); }));
-
-    dropZone.addEventListener('drop', e => {
-      const files = e.dataTransfer.files;
-      if (files && files.length > 0) processFile(files[0]);
-    });
-
-    function handleFileSelected(e) {
-      if (e.target.files && e.target.files.length > 0) processFile(e.target.files[0]);
-    }
-
-    function processFile(file) {
-      if (!file.name.toLowerCase().endsWith('.html') && !file.name.toLowerCase().endsWith('.htm')) {
-        alert('Please select a valid HTML file (.html or .htm).');
-        return;
+      const selectedBtn = document.getElementById(`tab-${tab}-btn`);
+      const selectedContent = document.getElementById(`tab-${tab}`);
+      
+      if (selectedBtn && selectedContent) {
+        selectedBtn.classList.add('active');
+        selectedBtn.setAttribute('aria-selected', 'true');
+        selectedContent.classList.add('active');
       }
-      selectedHtmlFile = file;
-      document.getElementById('selected-file-name').textContent = file.name;
-      const sizeKb = (file.size / 1024).toFixed(1);
-      document.getElementById('selected-file-size').textContent = `${sizeKb} KB • Ready for scan`;
-      document.getElementById('file-selected-box').style.display = 'flex';
-      announce(`Selected file ${file.name}`);
-
-      const reader = new FileReader();
-      reader.onload = evt => { selectedFileContent = evt.target.result; };
-      reader.readAsText(file);
     }
 
-    function clearSelectedFile() {
-      selectedHtmlFile = null;
-      selectedFileContent = null;
-      fileInput.value = '';
-      document.getElementById('file-selected-box').style.display = 'none';
-      announce('File removed.');
+    function focusWorkspaceInput() {
+      selectWorkspaceTab('url');
+      document.getElementById('target-url').focus();
     }
 
-    function showLoading(msg = 'Analyzing Document Accessibility...') {
-      document.getElementById('loading-message').textContent = msg;
-      document.getElementById('loading-spinner').style.display = 'block';
-      announce(msg);
+    function showLoading(msg) {
+      const el = document.getElementById('loading-spinner');
+      if (el) {
+        document.getElementById('loading-msg').textContent = msg || 'Auditing accessibility barriers...';
+        el.style.display = 'block';
+      }
     }
 
     function hideLoading() {
-      document.getElementById('loading-spinner').style.display = 'none';
+      const el = document.getElementById('loading-spinner');
+      if (el) el.style.display = 'none';
     }
 
-    function runUploadedFileScan() {
-      if (!selectedFileContent && !selectedHtmlFile) return alert('Please choose an HTML file first.');
-      showLoading(`Scanning uploaded file "${selectedHtmlFile ? selectedHtmlFile.name : 'document'}"...`);
-      fetch('/api/scan', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ html: selectedFileContent, source_title: selectedHtmlFile ? selectedHtmlFile.name : 'Uploaded HTML' })
-      })
+    /* DRAG AND DROP FILE HANDLERS */
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById('drop-zone').classList.add('dragover');
+    }
+
+    function handleDragLeave(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById('drop-zone').classList.remove('dragover');
+    }
+
+    function handleFileDrop(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById('drop-zone').classList.remove('dragover');
+      const files = e.dataTransfer.files;
+      if (files.length > 0) processFile(files[0]);
+    }
+
+    function handleFileSelect(e) {
+      if (e.target.files.length > 0) processFile(e.target.files[0]);
+    }
+
+    function processFile(file) {
+      selectedHtmlFile = file;
+      document.getElementById('file-name-display').textContent = `${file.name} (${(file.size/1024).toFixed(1)} KB)`;
+      document.getElementById('file-selected-info').style.display = 'flex';
+      showToast(`Selected file: ${file.name}`);
+    }
+
+    function uploadAndAuditFile() {
+      if (!selectedHtmlFile) return alert('Please select an HTML file.');
+      showLoading(`Auditing uploaded file ${selectedHtmlFile.name}...`);
+      
+      const formData = new FormData();
+      formData.append('file', selectedHtmlFile);
+
+      fetch('/api/scan-file', { method: 'POST', body: formData })
       .then(res => res.json())
-      .then(data => { hideLoading(); displayResults(data); })
-      .catch(err => { hideLoading(); alert('Error scanning file: ' + err.message); });
-    }
-
-    function runSampleScan() {
-      showLoading('Auditing ApexFlow Sample Inaccessible Page...');
-      fetch('/api/scan-sample')
-        .then(res => res.json())
-        .then(data => { hideLoading(); displayResults(data); })
-        .catch(err => { hideLoading(); alert('Error: ' + err.message); });
+      .then(data => { hideLoading(); displayAuditResults(data); })
+      .catch(err => { hideLoading(); alert('File Audit Error: ' + err.message); });
     }
 
     function runUrlScan() {
       const url = document.getElementById('target-url').value.trim();
       if (!url) return alert('Please enter a URL.');
-      showLoading(`Scanning URL ${url}...`);
+      showLoading(`Scanning webpage URL ${url}...`);
+
       fetch('/api/scan', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: url })
       })
       .then(res => res.json())
-      .then(data => { hideLoading(); displayResults(data); })
-      .catch(err => { hideLoading(); alert('Error: ' + err.message); });
+      .then(data => { hideLoading(); displayAuditResults(data); })
+      .catch(err => { hideLoading(); alert('URL Audit Error: ' + err.message); });
     }
 
     function runRawHtmlScan() {
       const html = document.getElementById('raw-html').value.trim();
-      if (!html) return alert('Please paste HTML.');
-      showLoading('Auditing pasted HTML...');
+      if (!html) return alert('Please paste HTML code.');
+      showLoading('Auditing pasted HTML code...');
+
       fetch('/api/scan', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ html: html, source_title: 'Custom HTML' })
+        body: JSON.stringify({ html: html, source_title: 'Custom HTML Code' })
       })
       .then(res => res.json())
-      .then(data => { hideLoading(); displayResults(data); })
-      .catch(err => { hideLoading(); alert('Error: ' + err.message); });
+      .then(data => { hideLoading(); displayAuditResults(data); })
+      .catch(err => { hideLoading(); alert('Code Audit Error: ' + err.message); });
     }
 
-    function displayResults(data) {
+    function runSampleScan() {
+      selectWorkspaceTab('sample');
+      showLoading('Auditing built-in demo accessibility page...');
+      fetch('/api/scan-sample')
+      .then(res => res.json())
+      .then(data => { hideLoading(); displayAuditResults(data); })
+      .catch(err => { hideLoading(); alert('Demo Audit Error: ' + err.message); });
+    }
+
+    /* DISPLAY AUDIT RESULTS */
+    function displayAuditResults(data) {
       if (!data.success) {
         alert('Audit Error: ' + (data.error || 'Scanner error'));
         return;
       }
+
       currentIssues = data.issues || [];
       currentAuditId = data.audit_id || null;
 
-      const resultsArea = document.getElementById('results-area');
-      resultsArea.style.display = 'block';
+      document.getElementById('results-dashboard-area').style.display = 'block';
 
       const score = data.health ? data.health.score : 0;
       const grade = data.health ? data.health.grade : 'N/A';
-      const statusDesc = data.health ? data.health.status : 'Audit completed';
 
-      const scoreValEl = document.getElementById('score-val');
-      scoreValEl.textContent = score;
-      scoreValEl.setAttribute('aria-label', `Health score: ${score} out of 100`);
+      document.getElementById('score-val').textContent = score;
+      document.getElementById('score-grade-badge').textContent = 'Grade: ' + grade;
 
-      const gradeBadge = document.getElementById('score-grade-badge');
-      gradeBadge.textContent = 'Grade: ' + grade;
+      // Animate SVG circle stroke
+      const strokeEl = document.getElementById('score-circle-stroke');
+      const offset = 176 - (176 * score / 100);
+      strokeEl.style.strokeDashoffset = offset;
 
-      if (score >= 90) {
-        gradeBadge.style.background = 'var(--success-bg)';
-        gradeBadge.style.color = 'var(--success-text)';
-        scoreValEl.style.color = 'var(--success-text)';
-      } else if (score >= 70) {
-        gradeBadge.style.background = 'var(--moderate-bg)';
-        gradeBadge.style.color = 'var(--moderate-text)';
-        scoreValEl.style.color = 'var(--moderate-text)';
-      } else {
-        gradeBadge.style.background = 'var(--critical-bg)';
-        gradeBadge.style.color = 'var(--critical-text)';
-        scoreValEl.style.color = 'var(--critical-text)';
-      }
-
-      document.getElementById('score-status-desc').textContent = statusDesc;
+      if (score >= 90) strokeEl.style.stroke = 'var(--pass-text)';
+      else if (score >= 75) strokeEl.style.stroke = 'var(--primary)';
+      else strokeEl.style.stroke = 'var(--critical-text)';
 
       const total = data.total_flags || 0;
       const critical = (data.severity_summary && data.severity_summary.CRITICAL) || 0;
       const serious = (data.severity_summary && data.severity_summary.SERIOUS) || 0;
       const moderate = (data.severity_summary && data.severity_summary.MODERATE) || 0;
+      const passed = Math.max(0, 100 - (total * 3));
 
-      document.getElementById('count-total').textContent = total;
       document.getElementById('count-critical').textContent = critical;
-      document.getElementById('count-serious').textContent = serious;
-      document.getElementById('count-moderate').textContent = moderate;
+      document.getElementById('count-serious').textContent = serious + moderate;
+      document.getElementById('count-passed').textContent = passed;
+
+      document.getElementById('audit-meta-title').textContent = `${data.source || 'Audited Webpage'} • Scanned just now`;
+
+      // Update Severity Bar widths
+      const totSev = Math.max(1, critical + serious + moderate);
+      document.getElementById('sev-bar-crit').style.width = `${(critical / totSev * 100).toFixed(0)}%`;
+      document.getElementById('sev-bar-ser').style.width = `${(serious / totSev * 100).toFixed(0)}%`;
+      document.getElementById('sev-bar-mod').style.width = `${(moderate / totSev * 100).toFixed(0)}%`;
 
       if (data.standards_summary) {
-        document.getElementById('wcag-compliance-rate').textContent = (data.standards_summary.wcag_21 ? data.standards_summary.wcag_21.compliance_rate : '--%') + ' Pass Rate';
-        document.getElementById('sec508-compliance-rate').textContent = (data.standards_summary.section_508 ? data.standards_summary.section_508.compliance_rate : '--%') + ' Pass Rate';
-        document.getElementById('en301-compliance-rate').textContent = (data.standards_summary.en_301_549 ? data.standards_summary.en_301_549.compliance_rate : '--%') + ' Pass Rate';
+        document.getElementById('wcag-rate-val').textContent = data.standards_summary.wcag_21.compliance_rate;
+        document.getElementById('sec508-rate-val').textContent = data.standards_summary.section_508.compliance_rate;
+        document.getElementById('en301-rate-val').textContent = data.standards_summary.en_301_549.compliance_rate;
       }
 
-      const btnInspect = document.getElementById('btn-inspect');
-      if (currentAuditId) {
-        btnInspect.disabled = false;
-        btnInspect.style.opacity = '1';
-      }
-
-      renderIssues();
-      loadFalsePositiveTickets();
-      announce(`Audit complete. Found ${total} barriers across Principles 1, 2, and 3.`);
-      resultsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    function filterPrinciple(principle, btn) {
-      activePrincipleFilter = principle;
-      btn.parentElement.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderIssues();
+      renderIssuesList();
+      showToast(`Audit complete! Found ${total} barriers across WCAG, 508 & EN 301 549.`);
+      announce(`Audit complete with health score ${score} out of 100.`);
+      
+      document.getElementById('results-dashboard-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function filterSeverity(sev, btn) {
       activeSeverityFilter = sev;
-      btn.parentElement.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+      btn.parentElement.querySelectorAll('.filter-btn-pill').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      renderIssues();
+      renderIssuesList();
     }
 
-    function renderIssues() {
-      const container = document.getElementById('issues-container');
+    function filterIssuesSearch(q) {
+      searchQuery = (q || '').toLowerCase();
+      renderIssuesList();
+    }
+
+    function renderIssuesList() {
+      const container = document.getElementById('issues-list-container');
       container.innerHTML = '';
 
       let filtered = currentIssues;
-      if (activePrincipleFilter !== 'ALL') {
-        filtered = filtered.filter(i => i.principle === activePrincipleFilter);
-      }
       if (activeSeverityFilter !== 'ALL') {
         filtered = filtered.filter(i => (i.severity || '').toUpperCase() === activeSeverityFilter);
       }
 
+      if (searchQuery) {
+        filtered = filtered.filter(i => 
+          (i.title || '').toLowerCase().includes(searchQuery) ||
+          (i.description || '').toLowerCase().includes(searchQuery) ||
+          (i.wcag_sc || '').toLowerCase().includes(searchQuery)
+        );
+      }
+
       if (filtered.length === 0) {
         container.innerHTML = `
-          <div style="text-align: center; padding: 40px 20px; background: #ffffff; border-radius: 12px; border: 1px solid var(--border-subtle);">
-            <div style="font-size: 1.2rem; font-weight: 700; color: var(--text-main);">No barriers matching selected filters.</div>
-            <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Try selecting 'All Principles' or 'All Severities'.</div>
+          <div style="text-align: center; padding: 36px 20px; background: #ffffff; border-radius: 12px; border: 1px solid var(--border-subtle);">
+            <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-main);">No accessibility issues matching query.</div>
           </div>
         `;
         return;
       }
 
       filtered.forEach((issue, idx) => {
-        const item = document.createElement('article');
+        const item = document.createElement('div');
         const sev = (issue.severity || 'MODERATE').toUpperCase();
-        item.className = `issue-card sev-${sev.toLowerCase()}`;
+        item.className = `issue-card-item sev-${sev.toLowerCase()}`;
 
-        const badgeClass = `badge-${sev.toLowerCase()}`;
-        const quickFix = issue.quick_fix_code || issue.suggested_action || 'No quick fix available.';
-        const actionText = issue.suggested_action || 'Remediate markup to align with WCAG guidelines.';
+        const quickFix = issue.quick_fix_code || issue.suggested_action || 'Remediate code to meet accessibility standards.';
 
         item.innerHTML = `
-          <div class="issue-header-row">
-            <div class="issue-title-area">
-              <span class="issue-badge-num">${issue.flag_badge || '#' + (idx + 1)}</span>
-              <h4 class="issue-title">${escapeHtml(issue.title)}</h4>
+          <div class="issue-top-bar">
+            <div>
+              <span class="badge-sev badge-sev-${sev.toLowerCase()}">${sev}</span>
+              <strong style="margin-left: 8px; font-size: 1.1rem; color: var(--text-main);">${escapeHtml(issue.title)}</strong>
             </div>
-            <div class="badge-pills">
-              <span class="pill-principle">${escapeHtml(issue.principle || 'Perceivable')}</span>
-              <span class="pill-severity ${badgeClass}">${sev}</span>
+
+            <div class="issue-badges-row">
+              <span style="font-size:0.775rem; font-weight:700; background:#eef2ff; color:#4338ca; padding:3px 8px; border-radius:6px;">${escapeHtml(issue.wcag_sc || 'WCAG 2.1')}</span>
+              <span style="font-size:0.775rem; font-weight:700; background:#eff6ff; color:#1d4ed8; padding:3px 8px; border-radius:6px;">${escapeHtml(issue.section_508 || 'Sec 508')}</span>
+              <span style="font-size:0.775rem; font-weight:700; background:#fdf2f8; color:#be185d; padding:3px 8px; border-radius:6px;">${escapeHtml(issue.en_301_549 || 'EN 301 549')}</span>
             </div>
           </div>
 
-          <div class="issue-meta-bar" style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px;">
-            <span class="wcag-sc-tag" style="background: #eef2ff; color: #4338ca; padding: 4px 8px; border-radius: 6px; font-weight: 700; font-size: 0.8rem;">${escapeHtml(issue.wcag_sc || 'WCAG 2.1')}</span>
-            <span style="background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; padding: 4px 8px; border-radius: 6px; font-weight: 600; font-size: 0.8rem;">Section 508: ${escapeHtml(issue.section_508 || '§ 1194.22')}</span>
-            <span style="background: #fdf2f8; color: #be185d; border: 1px solid #fbcfe8; padding: 4px 8px; border-radius: 6px; font-weight: 600; font-size: 0.8rem;">EN 301 549: ${escapeHtml(issue.en_301_549 || 'Clause 9')}</span>
-            <span style="color: var(--text-muted);">&bull;</span>
-            <span>Element: <code class="target-tag">&lt;${escapeHtml(issue.element_tag || 'div')}&gt;</code></span>
-          </div>
+          <p style="font-size: 0.925rem; color: var(--text-secondary); margin-bottom: 14px;">${escapeHtml(issue.description || '')}</p>
 
-          <p class="issue-desc">${escapeHtml(issue.description || '')}</p>
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div style="font-size: 0.85rem; color: var(--text-muted);">
+              Element: <code>&lt;${escapeHtml(issue.element_tag || 'el')}&gt;</code>
+            </div>
 
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 10px; flex-wrap: wrap;">
-            ${issue.is_false_positive ? `
-              <span style="background: var(--success-bg); color: var(--success-text); border: 1px solid var(--success-border); padding: 6px 14px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
-                ✓ False Positive Resolved by AI Auditor
-              </span>
-            ` : `
-              <button type="button" onclick="openDisputeModal(${issue.flag_id})" style="font-size: 0.85rem; padding: 6px 14px; background: #ffffff; border: 1.5px solid var(--border-strong); color: var(--text-main); font-weight: 700; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
-                🛡️ Log False Positive
-              </button>
-            `}
-          </div>
-
-          <!-- Quick Fix Section -->
-          <div class="quick-fix-panel">
-            <div class="quick-fix-header">
-              <div class="quick-fix-title">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                </svg>
-                <span>⚡ Quick Fix & Code Remediation</span>
-              </div>
-              <button type="button" class="btn-copy" onclick="copyFixCode(this)">
-                Copy Quick Fix
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              ${issue.is_false_positive ? `
+                <span style="background: var(--pass-bg); color: var(--pass-text); border: 1px solid var(--pass-border); padding: 5px 12px; border-radius: 8px; font-size: 0.825rem; font-weight: 700;">
+                  ✓ False Positive Resolved by AI
+                </span>
+              ` : `
+                <button type="button" class="btn btn-secondary" onclick="openDisputeModal(${issue.flag_id})" style="padding: 5px 12px; font-size: 0.825rem;">
+                  🛡️ Log False Positive
+                </button>
+              `}
+              
+              <button type="button" class="btn btn-primary" onclick="setAiAssistantPreview('${escapeJs(issue.title)}', '${escapeJs(quickFix)}')" style="padding: 5px 14px; font-size: 0.825rem;">
+                View Fix &rarr;
               </button>
             </div>
-            <pre class="quick-fix-code"><code>${escapeHtml(quickFix)}</code></pre>
-            <div class="quick-fix-action">💡 <strong>Remediation Steps:</strong> ${escapeHtml(actionText)}</div>
           </div>
         `;
         container.appendChild(item);
       });
     }
 
-    function copyFixCode(btn) {
-      const codeEl = btn.parentElement.parentElement.querySelector('.quick-fix-code code');
+    function setAiAssistantPreview(title, code) {
+      document.getElementById('ai-active-issue-title').innerHTML = `<strong>Target Issue:</strong> ${escapeHtml(title)}`;
+      document.getElementById('ai-code-preview').innerHTML = `<code>${escapeHtml(code)}</code>`;
+      document.querySelector('.ai-fix-panel').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      showToast('AI Remediation Fix loaded into panel!');
+    }
+
+    function copyAiFixCode() {
+      const codeEl = document.getElementById('ai-code-preview').querySelector('code');
       if (codeEl) {
-        const text = codeEl.textContent;
-        navigator.clipboard.writeText(text).then(() => {
-          const origText = btn.textContent;
-          btn.textContent = 'Copied!';
-          btn.style.background = 'var(--success-bg)';
-          btn.style.color = 'var(--success-text)';
-          setTimeout(() => {
-            btn.textContent = origText;
-            btn.style.background = '#ffffff';
-            btn.style.color = 'var(--primary)';
-          }, 2000);
+        navigator.clipboard.writeText(codeEl.textContent).then(() => {
+          showToast('✓ AI Remediation snippet copied to clipboard!');
         });
       }
     }
 
-    function escapeHtml(text) {
-      if (!text) return '';
-      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-    }
-
-    function openInspectorWindow() {
-      if (!currentAuditId) return alert('Please run an audit first.');
-      window.open(`/inspect/${currentAuditId}`, '_blank');
-    }
-
-    function downloadExcelReport() {
-      if (!currentIssues || currentIssues.length === 0) return alert('No issues to export.');
-      showLoading('Generating WCAG Excel Assessment Report...');
-      fetch('/api/export-excel', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ issues: currentIssues, title: 'Patchly WCAG Assessment' })
-      })
-      .then(res => res.blob())
-      .then(blob => {
-        hideLoading();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `Patchly_Assessment_${Date.now()}.xlsx`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-      })
-      .catch(err => { hideLoading(); alert('Export failed: ' + err.message); });
-    }
-
+    /* FALSE POSITIVE DISPUTE MODAL */
     function openDisputeModal(flagId) {
       const issue = currentIssues.find(i => String(i.flag_id) === String(flagId));
       if (!issue) return;
@@ -1642,7 +1785,7 @@
       .then(data => {
         hideLoading();
         if (!data.success) {
-          alert('Dispute Submission Error: ' + (data.error || 'Server error'));
+          alert('Dispute Error: ' + (data.error || 'Server error'));
           return;
         }
 
@@ -1655,43 +1798,17 @@
           if (ticket.updated_health) {
             document.getElementById('score-val').textContent = ticket.updated_health.score;
             document.getElementById('score-grade-badge').textContent = 'Grade: ' + ticket.updated_health.grade;
-            document.getElementById('score-status-desc').textContent = ticket.updated_health.status;
           }
-          if (ticket.updated_standards) {
-            document.getElementById('wcag-compliance-rate').textContent = (ticket.updated_standards.wcag_21 ? ticket.updated_standards.wcag_21.compliance_rate : '--%') + ' Pass Rate';
-            document.getElementById('sec508-compliance-rate').textContent = (ticket.updated_standards.section_508 ? ticket.updated_standards.section_508.compliance_rate : '--%') + ' Pass Rate';
-            document.getElementById('en301-compliance-rate').textContent = (ticket.updated_standards.en_301_549 ? ticket.updated_standards.en_301_549.compliance_rate : '--%') + ' Pass Rate';
-          }
-          renderIssues();
+          renderIssuesList();
         } else {
           alert('❌ AI Auditor Verdict: ' + ticket.ai_verdict + '\n\n' + ticket.ai_explanation);
         }
-
         loadFalsePositiveTickets();
       })
       .catch(err => { hideLoading(); alert('Dispute Error: ' + err.message); });
     }
 
-    function switchMainView(view) {
-      document.getElementById('main-audit-view').style.display = view === 'audit' ? 'block' : 'none';
-      document.getElementById('main-testruns-view').style.display = view === 'testruns' ? 'block' : 'none';
-      document.getElementById('main-dispute-view').style.display = view === 'dispute' ? 'block' : 'none';
-
-      document.querySelectorAll('.main-nav-btn').forEach(btn => {
-        btn.style.background = 'transparent';
-        btn.style.color = 'var(--text-secondary)';
-      });
-
-      const activeBtn = document.getElementById(`nav-${view}-btn`);
-      if (activeBtn) {
-        activeBtn.style.background = 'var(--primary)';
-        activeBtn.style.color = '#ffffff';
-      }
-
-      if (view === 'testruns') loadTestRunsFeed();
-      if (view === 'dispute') loadFalsePositiveTickets();
-    }
-
+    /* BATCH TEST RUNS & CRAWLERS */
     function runCrawlTestRun() {
       const url = document.getElementById('crawl-url-input').value.trim();
       const maxPages = document.getElementById('crawl-max-pages').value;
@@ -1709,13 +1826,13 @@
       .then(data => {
         hideLoading();
         if (!data.success) {
-          alert('Crawl Test Run Error: ' + (data.error || 'Failed to crawl URL'));
+          alert('Crawl Error: ' + (data.error || 'Failed to crawl URL'));
           return;
         }
-        alert(`✓ Test Run Executed: Split into ${data.total_pages_split} sub-page assessments!`);
+        showToast(`✓ Test Run Executed: Split into ${data.total_pages_split} sub-page assessments!`);
         loadTestRunsFeed();
       })
-      .catch(err => { hideLoading(); alert('Test Run Error: ' + err.message); });
+      .catch(err => { hideLoading(); alert('Crawl Error: ' + err.message); });
     }
 
     function runFolderTestRun() {
@@ -1737,10 +1854,10 @@
           alert('Folder Test Run Error: ' + (data.error || 'Failed to scan folder'));
           return;
         }
-        alert(`✓ Folder Test Run Executed: Assessed ${data.total_pages_split} HTML files!`);
+        showToast(`✓ Folder Test Run Executed: Assessed ${data.total_pages_split} HTML files!`);
         loadTestRunsFeed();
       })
-      .catch(err => { hideLoading(); alert('Folder Test Run Error: ' + err.message); });
+      .catch(err => { hideLoading(); alert('Folder Error: ' + err.message); });
     }
 
     function loadTestRunsFeed() {
@@ -1770,26 +1887,13 @@
               </div>
 
               <div style="text-align: right;">
-                <div style="font-size: 2rem; font-weight: 900; color: ${tr.overall_health.score >= 80 ? 'var(--success-text)' : 'var(--critical-text)'};">${tr.overall_health.score}/100</div>
+                <div style="font-size: 2rem; font-weight: 900; color: ${tr.overall_health.score >= 80 ? 'var(--pass-text)' : 'var(--critical-text)'};">${tr.overall_health.score}/100</div>
                 <div style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Overall Health</div>
               </div>
             </div>
 
-            <!-- Multi-Standard Summary Pills -->
-            <div style="display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap;">
-              <span style="background: #eef2ff; color: #4338ca; border: 1px solid #c7d2fe; padding: 4px 10px; border-radius: 6px; font-weight: 700; font-size: 0.825rem;">
-                WCAG 2.1: ${tr.overall_standards.wcag_21.compliance_rate}
-              </span>
-              <span style="background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; padding: 4px 10px; border-radius: 6px; font-weight: 700; font-size: 0.825rem;">
-                Section 508: ${tr.overall_standards.section_508.compliance_rate}
-              </span>
-              <span style="background: #fdf2f8; color: #be185d; border: 1px solid #fbcfe8; padding: 4px 10px; border-radius: 6px; font-weight: 700; font-size: 0.825rem;">
-                EN 301 549: ${tr.overall_standards.en_301_549.compliance_rate}
-              </span>
-            </div>
-
-            <!-- Split Pages Sub-Table -->
-            <h5 style="font-size: 0.95rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px;">Sub-Page Assessment Breakdown (${tr.pages_audited.length} URLs Split)</h5>
+            <!-- Sub-Page Breakdown -->
+            <h5 style="font-size: 0.875rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px;">Sub-Page Assessment Breakdown (${tr.pages_audited.length} URLs Split)</h5>
             <div style="display: flex; flex-direction: column; gap: 8px;">
               ${tr.pages_audited.map(p => `
                 <div style="background: #f8fafc; border: 1px solid var(--border-subtle); padding: 12px 16px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;">
@@ -1830,7 +1934,7 @@
                   <span style="background: var(--primary-light); color: var(--primary); font-weight: 800; font-size: 0.8rem; padding: 3px 8px; border-radius: 6px;">TICKET ${escapeHtml(t.id)}</span>
                   <strong style="margin-left: 8px; font-size: 1.05rem;">${escapeHtml(t.issue_title || 'Disputed Barrier')}</strong>
                 </div>
-                <span style="background: ${t.is_approved ? 'var(--success-bg)' : 'var(--critical-bg)'}; color: ${t.is_approved ? 'var(--success-text)' : 'var(--critical-text)'}; padding: 4px 12px; border-radius: 9999px; font-weight: 800; font-size: 0.825rem;">
+                <span style="background: ${t.is_approved ? 'var(--pass-bg)' : 'var(--critical-bg)'}; color: ${t.is_approved ? 'var(--pass-text)' : 'var(--critical-text)'}; padding: 4px 12px; border-radius: 9999px; font-weight: 800; font-size: 0.825rem;">
                   ${escapeHtml(t.status)}
                 </span>
               </div>
@@ -1851,6 +1955,43 @@
         if (dedicatedContainer) dedicatedContainer.innerHTML = renderHtml(data.tickets);
       })
       .catch(() => {});
+    }
+
+    function openInspectorWindow() {
+      if (!currentAuditId) return alert('Please run an audit first.');
+      window.open(`/inspect/${currentAuditId}`, '_blank');
+    }
+
+    function downloadExcelReport() {
+      if (!currentIssues || currentIssues.length === 0) return alert('No issues to export.');
+      showToast('Generating WCAG Excel Assessment Report...');
+      fetch('/api/export-excel', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ issues: currentIssues, title: 'Patchly WCAG Assessment' })
+      })
+      .then(res => res.blob())
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Patchly_Assessment_${Date.now()}.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        showToast('✓ Excel Report downloaded!');
+      })
+      .catch(err => { alert('Export failed: ' + err.message); });
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+
+    function escapeJs(text) {
+      if (!text) return '';
+      return text.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, '\\n');
     }
   </script>
 </body>

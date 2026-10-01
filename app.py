@@ -38,8 +38,8 @@ INDEX_HTML = """
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Patchly - Accessible Web Accessibility Scanner & Remediation</title>
-  <meta name="description" content="Audit web accessibility barriers against WCAG 2.1 Principles 1, 2, and 3 with automated checks, HTML file uploads, interactive visual overlay inspection, and instant quick-fix remediation.">
+  <title>Patchly — AI-Powered Web Accessibility Auditing & Remediation Platform</title>
+  <meta name="description" content="Enterprise accessibility auditing platform for WCAG 2.1 AA, US Section 508, and EU EN 301 549 compliance. Automated testing, multi-page crawling, AI remediation fixes, and false positive dispute resolution.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
